@@ -1,6 +1,6 @@
 package com.thien.ingredients;
 
-public class CoffeeStoreApp {
+public class IngredientsApp {
     
     public static void main(String[] args) {
         

@@ -1,10 +1,10 @@
-package com.thien.cfsmanagement.gui.viewer;
+package com.thien.cfsmanagement;
 
 public class CoffeeStoreApp {
     
     public static void main(String[] args) {
         
-        
+
 
 
     }

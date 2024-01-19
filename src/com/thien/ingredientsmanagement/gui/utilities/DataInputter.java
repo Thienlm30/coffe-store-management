@@ -1,4 +1,4 @@
-package com.thien.cfsmanagement.gui.utilities;
+package com.thien.ingredientsmanagement.gui.utilities;
 
 public class DataInputter {
     

@@ -1,4 +1,4 @@
-package com.thien.cfsmanagement.gui.viewer;
+package com.thien.ingredientsmanagement.gui.viewer;
 
 public class CoffeeStoreMenu {
     

@@ -1,15 +1,15 @@
-package com.thien.cfsmanagement.bussiness.model;
+package com.thien.ingredientsmanagement.bussiness.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuElement {
+public class MenuItem {
 
     private String id;
     private String name;
     private List<Ingredients> listOfIngredientes;
     
-    public MenuElement(String id, String name, List<Ingredients> list) {
+    public MenuItem(String id, String name, List<Ingredients> list) {
         this.id = id;
         this.name = name;
         this.listOfIngredientes = new ArrayList<Ingredients>(list);

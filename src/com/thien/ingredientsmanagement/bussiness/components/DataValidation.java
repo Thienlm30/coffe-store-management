@@ -1,4 +1,4 @@
-package com.thien.cfsmanagement.bussiness.components;
+package com.thien.ingredientsmanagement.bussiness.components;
 
 public class DataValidation {
     

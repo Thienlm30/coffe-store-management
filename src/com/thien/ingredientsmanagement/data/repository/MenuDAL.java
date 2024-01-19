@@ -1,4 +1,4 @@
-package com.thien.cfsmanagement.data.repository;
+package com.thien.ingredientsmanagement.data.repository;
 
 public class MenuDAL {
     

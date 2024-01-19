@@ -1,4 +1,4 @@
-package com.thien.ingredientsmanagement.data;
+package com.thien.ingredients.data;
 
 import java.io.File;
 import java.io.FileInputStream;

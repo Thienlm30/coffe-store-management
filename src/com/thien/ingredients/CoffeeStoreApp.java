@@ -1,4 +1,4 @@
-package com.thien.ingredientsmanagement;
+package com.thien.ingredients;
 
 public class CoffeeStoreApp {
     

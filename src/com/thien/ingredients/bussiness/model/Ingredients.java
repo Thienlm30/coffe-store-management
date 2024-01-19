@@ -1,4 +1,4 @@
-package com.thien.ingredientsmanagement.bussiness.model;
+package com.thien.ingredients.bussiness.model;
 
 public class Ingredients {
     

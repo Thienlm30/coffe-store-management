@@ -1,0 +1,15 @@
+App quản lí nguyên liệu (ingredients) ở một quán coffee
+
+1. Ingredients.dat - file lưu thông tin nguyên liệu 
+   (ID, tên nguyên liệu, số lượng, hạn dùng)
+   - check hạn sử dụng coi đã quá hạn chưa
+
+2. Menu.dat - file lưu thông tin nguyên liệu cho từng món ăn
+   (ID, tên đồ uống, list-từng nguyên liệu)
+   - 
+3. Order.dat - 
+
+
+
+
+

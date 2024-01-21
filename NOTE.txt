@@ -1,7 +1,7 @@
 App quản lí nguyên liệu (ingredients) ở một quán coffee
 
 1. Ingredients.dat - file lưu thông tin nguyên liệu 
-   (ID-nguyên liệu, tên nguyên liệu, số lượng, unit, hạn dùng)
+   (ID-nguyên liệu, tên nguyên liệu, số lượng, unit-chỉ hiển thị, hạn dùng)
    - check hạn sử dụng coi đã quá hạn chưa
 
 
@@ -22,6 +22,8 @@ DESIGN LOG file
 -------------------------------------------------------------
 
 | 1. Mana ingredients
+     Dùng Queue - sort theo HSD để lưu 1 loại nguyên liệu
+     Dùng Map để lưu các Queue của từng nguyên liệu
      1.1 void addIngredients(<Ingredients> i)
         //nhập một loại nguyên liệu mới vào kho
         - trước khi add thì call hàm data validation

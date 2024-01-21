@@ -1,14 +1,42 @@
 App quản lí nguyên liệu (ingredients) ở một quán coffee
 
 1. Ingredients.dat - file lưu thông tin nguyên liệu 
-   (ID, tên nguyên liệu, số lượng, hạn dùng)
+   (ID-nguyên liệu, tên nguyên liệu, số lượng, unit, hạn dùng)
    - check hạn sử dụng coi đã quá hạn chưa
 
-2. Menu.dat - file lưu thông tin nguyên liệu cho từng món ăn
-   (ID, tên đồ uống, list-từng nguyên liệu)
-   - 
-3. Order.dat - 
 
+2. Menu.dat - file lưu thông tin nguyên liệu cho từng món ăn
+   (ID-đồ uống, tên đồ uống, list-từng nguyên liệu)
+   - Data structure: Map (ko trùng ID, search nhanh)
+
+3. Order.dat - file lưu thông tin order và bán ra
+   (ID-đơn, ngày giờ Order, list<Order>)
+   - list<Order>: + chứa ID từng món đồ uống
+                  + chứa số lượng từng món
+                  + note (Ex: ?% đường, ?% đớ)
+   - 
+
+DESIGN LOG file
+  - ghi lại lịch sử nhập, xuất nguyên liệu
+
+-------------------------------------------------------------
+
+| 1. Mana ingredients
+     1.1 void addIngredients(<Ingredients> i)
+        //nhập một loại nguyên liệu mới vào kho
+        - trước khi add thì call hàm data validation
+        - trùng                                               
+     1.2 void update(name, quantity, HSD)
+        //update những thông tin  
+        - cập nhật số lượng (cùng HSD)
+        - thêm mới (khác hạn dùng)
+     1.3 void delete(ID_nguyên liệu)
+        - xoá toàn bộ nguyên liệu ID-nguyên_liệu 
+         void delete(HSD)
+         - xoá những nguyên liệu hết HSD ra khỏi kho
+
+| 2. 
+ 
 
 
 

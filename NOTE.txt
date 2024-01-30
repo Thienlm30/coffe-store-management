@@ -21,6 +21,15 @@ DESIGN LOG file
 
 -------------------------------------------------------------
 
+KẾT HỢP: (DAO + MVC DESIGN PATTERN) * (N-Layer Architecture)
+  - Presentation Layer: (gui package)
+      + 
+
+
+
+
+-------------------------------------------------------------
+
 | 1. Mana ingredients
      Dùng Queue - sort theo HSD để lưu 1 loại nguyên liệu
      Dùng Map để lưu các Queue của từng nguyên liệu
@@ -39,6 +48,7 @@ DESIGN LOG file
 
 | 2. 
  
+
 
 
 

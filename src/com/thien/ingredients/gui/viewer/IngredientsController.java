@@ -2,11 +2,11 @@ package com.thien.ingredients.gui.viewer;
 
 import com.thien.ingredients.gui.utilities.Menu;
 
-public class IngredientsMenu {
+public class IngredientsController {
 
     private static Menu menu;
     
-    public static void menuIngredients(String menutitle) {
+    public static void mainMenu(String menutitle) {
         menu = new Menu(menutitle);
         menu.addOption("Add an ingredient");
         menu.addOption("Update ingredient information");

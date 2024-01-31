@@ -7,7 +7,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.thien.ingredients.bussiness.model.Order;
 
 /**
  * This class have funciton to save and access data of Oject from file
@@ -19,14 +25,14 @@ public class FileManagement {
     /**
      * This function load data of Object to file
      * Can be reuse in other project
-     * @param <T> Object type
+     * @param <E> Object type
      * @param list list Object
-     * @param fileName 
+     * @param pathFile 
      * @return 
      */
-    public <T> boolean loadFromFile(List<T> list, String fileName) {
+    public <E> boolean loadListFromFile(List<E> list, String pathFile) {
         list.clear();
-        File f = new File(fileName);
+        File f = new File(pathFile);
         if (!f.exists()) {
             return false;
         }
@@ -37,29 +43,20 @@ public class FileManagement {
                 System.err.println("File is empty");
             }
 
-            // boolean check = true;
-            // while (check) {
-            //     try {
-            //         T c = (T) ois.readObject();
-            //         list.add(c);
-            //     } catch (EOFException e) {
-            //         break;
-            //     }
-            // }
-            
             while (fis.available() > 0){
                 @SuppressWarnings("unchecked")
-               T c = (T) ois.readObject();
+               E c = (E) ois.readObject();
                list.add(c);
             }
+
             ois.close();
             fis.close();
         } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + fileName);
+            System.err.println("File not found: " + pathFile);
             return false;
         } catch (IOException | ClassNotFoundException e) {
             if (f.length() != 0) {
-                System.err.println("Error reading from file: " + fileName + " " + e.getMessage());
+                System.err.println("Error reading from file: " + pathFile + " " + e.getMessage());
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -77,17 +74,17 @@ public class FileManagement {
     /**
      * This function save Object to file
      * Can be reuse in other project
-     * @param <T> Object type
+     * @param <E> Object type
      * @param list list Object
-     * @param fileName
+     * @param pathFile
      * @param msg
      * @return 
      */
-    public <T> boolean saveToFile(List<T> list, String fileName, String msg) {
+    public <E> boolean saveListToFile(List<E> list, String pathFile, String msg) {
 
         try {
 
-            File f = new File(fileName);
+            File f = new File(pathFile);
             if (!f.exists()) {
                 System.out.println("Empty list");
                 return false;
@@ -96,7 +93,7 @@ public class FileManagement {
             ObjectOutputStream fileOut;
             try (FileOutputStream fos = new FileOutputStream(f)) {
                 fileOut = new ObjectOutputStream(fos);
-                for (T item : list) {
+                for (E item : list) {
                     fileOut.writeObject(item);
                 }
                 fileOut.close();
@@ -106,8 +103,39 @@ public class FileManagement {
             }
         } catch (IOException e) {
             System.out.println(e);
-            
         }
         return false;
     }
+
+    /**
+     * This method convert Java collection Map to List
+     * This list use in method saveMapToFile
+     * @param <K>
+     * @param <V>
+     * @param map
+     * @return
+     */
+    private <K, V> List<V> convertMapToList(Map<K, V> map) {
+        List<V> list = new ArrayList<>();
+        for (V item : map.values()) {
+            list.add(item);
+        }
+        return list;
+    }
+
+    /**
+     * This method save Java collection Map to file
+     * @param <K> key
+     * @param <V> valule - Object
+     * @param map
+     * @param pathFile
+     * @param msg successfully message
+     * @return
+     */
+    public <K, V> boolean saveMapToFile(Map<K, V> map, String pathFile, String msg) {
+        List<V> list = this.convertMapToList(map);
+        return this.saveListToFile(list, pathFile, msg);
+    }
+
+    public <K, V> boolean loadMapFromFile(Map<K, V> )
 }

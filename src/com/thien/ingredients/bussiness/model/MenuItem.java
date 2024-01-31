@@ -1,18 +1,18 @@
 package com.thien.ingredients.bussiness.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuItem {
 
     private String id;
     private String name;
-    private List<Ingredients> listOfIngredientes;
+    private Map<String, Integer> menuItemIngredients;
     
-    public MenuItem(String id, String name, List<Ingredients> list) {
+    public MenuItem(String id, String name, Map<String, Integer> menuItemIngredients) {
         this.id = id;
         this.name = name;
-        this.listOfIngredientes = new ArrayList<Ingredients>(list);
+        this.menuItemIngredients = new HashMap<String, Integer>();
     }
 
     public String getId() {
@@ -27,16 +27,12 @@ public class MenuItem {
         this.name = name;
     }
 
-    public List<Ingredients> getListOfIngredientes() {
-        return listOfIngredientes;
+    public Map<String, Integer> getMenuItemIngredients() {
+        return menuItemIngredients;
     }
 
-    public void setListOfIngredientes(List<Ingredients> listOfIngredientes) {
-        this.listOfIngredientes = listOfIngredientes;
+    public void setMenuItemIngredients(Map<String, Integer> menuItemIngredients) {
+        this.menuItemIngredients = menuItemIngredients;
     }
 
-    
-
-    
-    
 }

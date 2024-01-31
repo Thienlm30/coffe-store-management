@@ -1,6 +1,6 @@
 package com.thien.ingredients;
 
-import com.thien.ingredients.gui.viewer.IngredientsController;
+import com.thien.ingredients.gui.view.IngredientsController;
 
 public class IngredientsApp {
     

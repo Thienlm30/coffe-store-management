@@ -1,4 +1,4 @@
-package com.thien.ingredients.gui.viewer;
+package com.thien.ingredients.gui.view;
 
 import com.thien.ingredients.gui.utilities.Menu;
 

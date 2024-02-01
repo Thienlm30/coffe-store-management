@@ -8,12 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.thien.ingredients.bussiness.model.Order;
 
 /**
  * This class have funciton to save and access data of Oject from file
@@ -106,7 +102,7 @@ public class FileManagement {
         }
         return false;
     }
-
+    
     /**
      * This method convert Java collection Map to List
      * This list use in method saveMapToFile
@@ -115,7 +111,7 @@ public class FileManagement {
      * @param map
      * @return
      */
-    private <K, V> List<V> convertMapToList(Map<K, V> map) {
+    public <K, V> List<V> convertMapToList(Map<K, V> map) {
         List<V> list = new ArrayList<>();
         for (V item : map.values()) {
             list.add(item);
@@ -123,19 +119,4 @@ public class FileManagement {
         return list;
     }
 
-    /**
-     * This method save Java collection Map to file
-     * @param <K> key
-     * @param <V> valule - Object
-     * @param map
-     * @param pathFile
-     * @param msg successfully message
-     * @return
-     */
-    public <K, V> boolean saveMapToFile(Map<K, V> map, String pathFile, String msg) {
-        List<V> list = this.convertMapToList(map);
-        return this.saveListToFile(list, pathFile, msg);
-    }
-
-    public <K, V> boolean loadMapFromFile(Map<K, V> )
 }

@@ -5,6 +5,13 @@ import com.thien.ingredients.gui.utilities.Menu;
 public class IngredientsController {
 
     private static Menu menu;
+    private String ingredientPathFile, menuPathFile, orderPathFile;
+
+    public IngredientsController(String ingredientPathFile, String menuPathFile, String orderPathFile) {
+        this.ingredientPathFile = ingredientPathFile;
+        this.menuPathFile = menuPathFile;
+        this.orderPathFile = orderPathFile;
+    }
     
     public void mainMenu(String menutitle) {
         menu = new Menu(menutitle);

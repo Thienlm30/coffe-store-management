@@ -1,12 +1,12 @@
 package com.thien.ingredients.bussiness.model;
 
-public class Ingredients {
+public class Ingredient {
     
     private String id;
     private String name;
     private int quantity;
 
-    public Ingredients(String id, String name, int quantity) {
+    public Ingredient(String id, String name, int quantity) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;

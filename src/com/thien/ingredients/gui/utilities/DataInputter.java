@@ -107,7 +107,7 @@ public class DataInputter {
     public static String getStrCanBlank(String msg) {
         String string = "";
         System.out.print(msg);
-        string = sc.nextLine();
+        string = sc.nextLine().trim();
         return string;
     }
 

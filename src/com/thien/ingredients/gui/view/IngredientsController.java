@@ -1,5 +1,7 @@
 package com.thien.ingredients.gui.view;
 
+import com.thien.ingredients.bussiness.services.ManageIngredientDAO;
+import com.thien.ingredients.gui.utilities.DataInputter;
 import com.thien.ingredients.gui.utilities.Menu;
 
 public class IngredientsController {
@@ -30,7 +32,7 @@ public class IngredientsController {
             menu.getChoice();
              switch (choice) {
                 case 1:
-                    menuManageIngredients("Manage ingredients");
+                    menuManageIngredients("Manage ingredients", ingredientPathFile);
                     break;
                 case 2:
 
@@ -51,7 +53,7 @@ public class IngredientsController {
         } while (choice > 0 );
     }
 
-    private void menuManageIngredients(String subMenuTitle) {
+    private void menuManageIngredients(String subMenuTitle, String ingredientPathFile) {
         menu = new Menu(subMenuTitle);
         menu.addOption("Add an ingredient");
         menu.addOption("Update ingredient information");
@@ -60,6 +62,8 @@ public class IngredientsController {
         menu.addOption("Return to main menu");
         // 5 options
 
+        ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
+
         int choice = 0;
 
         do {
@@ -67,10 +71,10 @@ public class IngredientsController {
             menu.getChoice();
             switch (choice) {
                 case 1:
-                    
+                    manageIngredientDAO.addNew();
                     break;
                 case 2:
-
+                    manageIngredientDAO.update(DataInputter.getNonBlankString("Enter ingredient ID to update", "ID cannot be blank"));
                     break;
                 case 3:
 

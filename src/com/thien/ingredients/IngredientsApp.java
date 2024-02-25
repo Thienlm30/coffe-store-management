@@ -10,5 +10,5 @@ public class IngredientsApp {
         ingredientsController.mainMenu("Ingredients Management");
 
     }
-
+    
 }

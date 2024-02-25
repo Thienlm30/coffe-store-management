@@ -1,7 +1,7 @@
 package com.thien.ingredients.bussiness.model;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MenuItem {
 
@@ -12,7 +12,7 @@ public class MenuItem {
     public MenuItem(String id, String name, Map<String, Integer> menuItemIngredients) {
         this.id = id;
         this.name = name;
-        this.menuItemIngredients = new HashMap<String, Integer>();
+        this.menuItemIngredients = new TreeMap<String, Integer>();
     }
 
     public String getId() {
@@ -35,4 +35,18 @@ public class MenuItem {
         this.menuItemIngredients = menuItemIngredients;
     }
 
+    @Override
+    public String toString() {
+        return String.format("|%10s|%30S|%30s|", id, name, menuItemIngredientsToString());
+    }
+
+    private String menuItemIngredientsToString() {
+        String result = "";
+        if (menuItemIngredients != null) 
+            for(String i : menuItemIngredients.keySet()){
+                result += i + " ";
+            }
+        
+        return result;
+    }
 }

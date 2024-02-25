@@ -1,11 +1,14 @@
 package com.thien.ingredients.bussiness.model;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable, Comparable<Ingredient> {
     
     private String id;
     private String name;
     private int quantity;
     private String unit;
+    private IngredientStatus ingredientStatus;
 
     public Ingredient(String id, String name, int quantity, String unit) {
         this.id = id;
@@ -41,5 +44,30 @@ public class Ingredient {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+    public IngredientStatus getIngredientStatus() {
+        return ingredientStatus;
+    }
+
+    public void setIngredientStatus(IngredientStatus ingredientStatus) {
+        this.ingredientStatus = ingredientStatus;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("|%-10s|%-30s|%10d|%10s|", id, name, quantity, unit);
+    }
+
+    @Override
+    public int compareTo(Ingredient o) {
+        if (this.getId().compareTo(o.getId()) > 0){
+            return 1;
+        } else if (this.getId().compareTo(o.getId()) < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+    
     
 }

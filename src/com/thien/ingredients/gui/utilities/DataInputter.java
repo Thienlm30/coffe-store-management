@@ -139,7 +139,8 @@ public class DataInputter {
     public static boolean getYN(String msg) {
         String choice; boolean flag=true;
         while (flag) {
-            System.out.print(msg);
+            System.out.println(msg);
+            System.out.print("Y to continue - Others key to exit: ");
             choice = sc.nextLine();
             flag = choice.equalsIgnoreCase("Y");
             //if (!flag)

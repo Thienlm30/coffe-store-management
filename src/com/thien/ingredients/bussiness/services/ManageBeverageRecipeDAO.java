@@ -8,32 +8,35 @@ import java.util.Map;
 import com.thien.ingredients.bussiness.components.DataValidation;
 import com.thien.ingredients.bussiness.components.IdGenerator;
 import com.thien.ingredients.bussiness.model.Ingredient;
-import com.thien.ingredients.bussiness.model.MenuItem;
+import com.thien.ingredients.bussiness.model.BeverageRecipe;
 import com.thien.ingredients.data.repository.MenuDAL;
 import com.thien.ingredients.gui.utilities.DataInputter;
 
-public class ManageMenuItemDAO implements Manageable {
+public class ManageBeverageRecipeDAO implements Manageable {
 
-    Map<String, MenuItem> menuItemMap;
+    Map<String, BeverageRecipe> beverageRecipeMap;
     private MenuDAL menuDAL;
     private String ingredientPathFile;
     private String menuPathFile;
     
-    public ManageMenuItemDAO(String menuPathFile, String ingredientPathFile) {
+    public ManageBeverageRecipeDAO(String menuPathFile, String ingredientPathFile) {
         menuDAL = new MenuDAL();
-        List<MenuItem> list = new ArrayList<MenuItem>();
+        
+        this.beverageRecipeMap = new HashMap<String, BeverageRecipe>();
+        
+        List<BeverageRecipe> list = new ArrayList<BeverageRecipe>();
         menuDAL.loadFromFile(list, menuPathFile);
-        for (MenuItem m : list) {
-            menuItemMap.put(m.getId(), m);
+        for (BeverageRecipe m : list) {
+            beverageRecipeMap.put(m.getId(), m);
         }
         this.ingredientPathFile = ingredientPathFile;
-        this.menuPathFile = menuPathFile;
+        this.menuPathFile = menuPathFile; 
     }
 
     @Override
     public void addNew(String prefixId) {
     
-        IdGenerator idGenerator = new IdGenerator(menuItemMap, prefixId);
+        IdGenerator idGenerator = new IdGenerator(beverageRecipeMap, prefixId);
         String id = idGenerator.generateId();
         String name = DataInputter.getNonBlankString("Enter drink name :", "Name cannot be blank");
         ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
@@ -41,16 +44,16 @@ public class ManageMenuItemDAO implements Manageable {
         // Input menuItemIngredient 
         Map<String, Integer> menuItemIngredient = ingredientCollection("I", manageIngredientDAO.ingredientMap);
 
-        MenuItem menuItem = new MenuItem(id, name, menuItemIngredient);
+        BeverageRecipe menuItem = new BeverageRecipe(id, name, menuItemIngredient);
 
-        menuItemMap.put(menuItem.getId(), menuItem);
+        beverageRecipeMap.put(menuItem.getId(), menuItem);
 
     }
 
     @Override
     public void update(String id) {
         String name = DataInputter.getStrCanBlank("Enter new drink name: ");
-        if (name.isEmpty()) name = menuItemMap.get(id).getName();
+        if (name.isEmpty()) name = beverageRecipeMap.get(id).getName();
 
         if (DataInputter.getYN("Do you want to update drink recipe?")) {
             ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
@@ -58,18 +61,18 @@ public class ManageMenuItemDAO implements Manageable {
             // Input menuItemIngredient 
             Map<String, Integer> menuItemIngredient = ingredientCollection("I", manageIngredientDAO.ingredientMap);
 
-            menuItemMap.get(id).setMenuItemIngredients(menuItemIngredient);
+            beverageRecipeMap.get(id).setMenuItemIngredients(menuItemIngredient);
         }
     }
 
     @Override
     public void delete(String id) {
-        if (menuItemMap.get(id) == null) 
+        if (beverageRecipeMap.get(id) == null) 
             System.out.println("There no drink found");
         else {
             display(id);
             if (DataInputter.getYN("Do you want to delete this drink recipe?")) {
-                menuItemMap.remove(id);
+                beverageRecipeMap.remove(id);
                 System.out.println("Delete successful");
             }
         }
@@ -80,17 +83,17 @@ public class ManageMenuItemDAO implements Manageable {
         System.out.println(" ------------------------------------------------------------------------- ");
         System.out.println("|    ID    |             Name             |             Recipe            |");
         System.out.println(" ------------------------------------------------------------------------- ");
-        List<MenuItem> list = converMapToList();
+        List<BeverageRecipe> list = converMapToList();
         list.sort((i1, i2) -> i2.getName().compareToIgnoreCase(i1.getName()));
-        for (MenuItem m : list) {
+        for (BeverageRecipe m : list) {
             System.out.println(m.toString());
         }
         System.out.println(" ------------------------------------------------------------------------- ");
     }
 
-    private List<MenuItem> converMapToList() {
-        List<MenuItem> list = new ArrayList<MenuItem>();
-        for (MenuItem m : menuItemMap.values()) {
+    private List<BeverageRecipe> converMapToList() {
+        List<BeverageRecipe> list = new ArrayList<BeverageRecipe>();
+        for (BeverageRecipe m : beverageRecipeMap.values()) {
             list.add(m);
         }
         return list;
@@ -101,7 +104,7 @@ public class ManageMenuItemDAO implements Manageable {
         System.out.println(" ------------------------------------------------------------------ ");
         System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |");
         System.out.println(" ------------------------------------------------------------------ ");
-        System.out.println(menuItemMap.get(id).toString());
+        System.out.println(beverageRecipeMap.get(id).toString());
         System.out.println(" ------------------------------------------------------------------ ");
     }
 
@@ -110,11 +113,12 @@ public class ManageMenuItemDAO implements Manageable {
         DataValidation dataValidation = new DataValidation();
         Map<String, Integer> menuItemIngredients = new HashMap<String, Integer>();
             // add ingredient list
+            System.out.println("You are going to add ingredients to recipe");
             do {
                 String ingredientId = dataValidation.inputId(prefixId);
                 int ingredientQuantity;
                 
-                if (!isExit(ingredientId)) 
+                if (ingredientMap.containsKey(ingredientId)) 
                     System.out.println("No ingredient found");
                 else {
                     ingredientQuantity = DataInputter.getInteger("Enter ingredient quantity: ", "Quantity must be a number and cannot be less than zero", 0);;
@@ -126,14 +130,13 @@ public class ManageMenuItemDAO implements Manageable {
 
         }
 
-    @Override
     public boolean isExit(String id) {
-        if (menuItemMap.get(id) != null) return true;
-        return false;
+        return beverageRecipeMap.containsKey(id);
     }
 
     public void saveToFile() {
-        menuDAL.saveToFile(converMapToList(), menuPathFile);
+        if (!beverageRecipeMap.isEmpty())
+            menuDAL.saveToFile(converMapToList(), menuPathFile);
     }
     
 }

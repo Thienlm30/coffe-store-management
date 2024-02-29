@@ -7,7 +7,7 @@ public class IngredientsApp {
     public static void main(String[] args) {
        
         IngredientsController ingredientsController = new IngredientsController("Ingredients.dat", "Menu.dat", "Order.dat");
-        ingredientsController.mainMenu("Ingredients Management");
+        ingredientsController.mainMenu("Main Menu Ingredients Management");
 
     }
     

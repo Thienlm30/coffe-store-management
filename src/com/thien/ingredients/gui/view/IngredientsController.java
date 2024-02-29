@@ -3,7 +3,7 @@ package com.thien.ingredients.gui.view;
 import com.thien.ingredients.bussiness.components.DataValidation;
 import com.thien.ingredients.bussiness.services.DispensingDrinkDAO;
 import com.thien.ingredients.bussiness.services.ManageIngredientDAO;
-import com.thien.ingredients.bussiness.services.ManageMenuItemDAO;
+import com.thien.ingredients.bussiness.services.ManageBeverageRecipeDAO;
 import com.thien.ingredients.gui.utilities.DataInputter;
 import com.thien.ingredients.gui.utilities.Menu;
 
@@ -35,7 +35,6 @@ public class IngredientsController {
         do {
             menu.printMenu();
             choice = menu.getChoice();
-            System.out.println(choice);
              switch (choice) {
                 case 1:
                     menuManageIngredients("Manage ingredients", ingredientPathFile);
@@ -44,40 +43,40 @@ public class IngredientsController {
                     menuManageMenuItem("Manage beverage recipes", menuPathFile, ingredientPathFile);
                     break;
                 case 3:
-
+                    menuDispensableDrink(menutitle, ingredientPathFile, menuPathFile, orderPathFile);
                     break;
                 case 4:
-                    
+                    menuReport();
                     break;
                 case 5:
-                    
+                    saveToFile();
                     break;
                 default:
                     System.out.println("------Exit program------");
                     break;
              }
-        } while (choice > 0 && choice <= 5);
+        } while (choice > 0 && choice < 6);
     }
-
+    
     private void menuManageIngredients(String subMenuTitle, String ingredientPathFile) {
-        menu = new Menu(subMenuTitle);
-        menu.addOption("Add an ingredient");
-        menu.addOption("Update ingredient information");
-        menu.addOption("Delete ingredient");
-        menu.addOption("Show all ingredients");
-        menu.addOption("Return to main menu");
+        Menu menu1 = new Menu(subMenuTitle);
+        menu1.addOption("Add an ingredient");
+        menu1.addOption("Update ingredient information");
+        menu1.addOption("Delete ingredient");
+        menu1.addOption("Show all ingredients");
+        menu1.addOption("Return to main menu");
         // 5 options
 
         ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
 
         String prefixId = "I"; // Ingredient's ID like "Ixx..." (x is a number)
 
-        int choice = 0;
+        int choice1 = 0;
 
         do {
-            menu.printMenu();
-            choice = menu.getChoice();
-            switch (choice) {
+            menu1.printMenu();
+            choice1 = menu1.getChoice();
+            switch (choice1) {
                 case 1:
                     System.out.println("----You are going to add new ingredients----");
                     do {
@@ -103,79 +102,79 @@ public class IngredientsController {
                 case 4:
                     manageIngredientDAO.showAll();
                     break;
-                default:
+                case 5:
                     System.out.println("----Return to main menu----");
                     break;
             }
-        } while (choice > 0 && choice <= 4);
+        } while (choice1 != 5);
     }
 
     private void menuManageMenuItem(String subMenuTitle, String menuPathFile, String ingredientPathFile) {
-        menu = new Menu(subMenuTitle);
-        menu.addOption("Add the drink to the menu");
-        menu.addOption("Update the drink information");
-        menu.addOption("Delete the drink from the menu");
-        menu.addOption("Show all drink");
-        menu.addOption("Return to main menu");
+        Menu menu2 = new Menu(subMenuTitle);
+        menu2.addOption("Add the drink to the menu");
+        menu2.addOption("Update the drink information");
+        menu2.addOption("Delete the drink from the menu");
+        menu2.addOption("Show all drink");
+        menu2.addOption("Return to main menu");
         // 5 options
 
-        ManageMenuItemDAO manageMenuItemDAO = new ManageMenuItemDAO(menuPathFile, ingredientPathFile);
+        ManageBeverageRecipeDAO manageBeverageRecipeDAO = new ManageBeverageRecipeDAO(menuPathFile, ingredientPathFile);
 
         String prefixId = "D"; // Drink's ID like "Dxx..." (x is a number)
 
-        int choice = 0;
+        int choice2 = 0;
 
         do {
-            menu.printMenu();
-            choice = menu.getChoice();
-            switch (choice) {
+            menu2.printMenu();
+            choice2 = menu2.getChoice();
+            switch (choice2) {
                 case 1:
-                    System.out.println("----You are going to add new ingredients----");
+                    System.out.println("----You are going to add new drink----");
                     do {
-                        manageMenuItemDAO.addNew(prefixId);
+                        manageBeverageRecipeDAO.addNew(prefixId);
                     } while (DataInputter.getYN("Do you want to continue add new drink?"));
                     break;
                 case 2:
                     System.out.println("----You are going to update drink recipe information----");
                     String id = dataValidation.inputId(prefixId);
-                    if (!manageMenuItemDAO.isExit(id)) System.out.println("There no drink found");
+                    if (!manageBeverageRecipeDAO.isExit(id)) System.out.println("There no drink found");
                     else {
-                        manageMenuItemDAO.display(id); // Show infor before update
-                        manageMenuItemDAO.update(id);
-                        manageMenuItemDAO.display(id); // Show infor after update
+                        manageBeverageRecipeDAO.display(id); // Show infor before update
+                        manageBeverageRecipeDAO.update(id);
+                        manageBeverageRecipeDAO.display(id); // Show infor after update
                     }
                     break;
                 case 3:
                     System.out.println("----You are going to delete ingredient----");
-                    manageMenuItemDAO.showAll(); // Show drink list
-                    manageMenuItemDAO.delete(dataValidation.inputId(prefixId));
+                    manageBeverageRecipeDAO.showAll(); // Show drink list
+                    manageBeverageRecipeDAO.delete(dataValidation.inputId(prefixId));
                     break;
                 case 4:
-                    manageMenuItemDAO.showAll();
+                    manageBeverageRecipeDAO.showAll();
                     break;
                 default:
                     System.out.println("----Return to main menu----");
                     break;
             }
-        } while (choice > 0 && choice <= 4);
+        } while (choice2 > 0 && choice2 < 5);
     }
 
     private void menuDispensableDrink(String subMenuTitle, String ingredientPathFile, String menuPathFile, String orderPathFile) {
-        menu = new Menu(subMenuTitle);
-        menu.addOption("Dispensing the drink");
-        menu.addOption("Update the dispensing drink");
-        menu.addOption("Return to main menu");
+        Menu menu3 = new Menu(subMenuTitle);
+        menu3.addOption("Dispensing the drink");
+        menu3.addOption("Update the dispensing drink");
+        menu3.addOption("Return to main menu");
 
         DispensingDrinkDAO dispensingDrinkDAO = new DispensingDrinkDAO(ingredientPathFile, menuPathFile, orderPathFile);
 
         String prefixID = "O"; // Order ID like "Oxx.." (x is a number)
 
-        int choice = 0;
+        int choice3 = 0;
 
         do {
-            menu.printMenu();
-            choice = menu.getChoice();
-            switch (choice) {
+            menu3.printMenu();
+            choice3 = menu3.getChoice();
+            switch (choice3) {
                 case 1:
                     dispensingDrinkDAO.dispensingDrink(prefixID);
                     break;
@@ -186,11 +185,24 @@ public class IngredientsController {
                     System.out.println("---Return to main menu---");
                     break;
             }
-        } while (choice > 0 && choice <= 2);
+        } while (choice3 > 0 && choice3 < 3);
 
     }
 
-
-
+    private void menuReport() {
+        
+    }
+    
+    private void saveToFile() {
+        ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
+        manageIngredientDAO.saveToFile();
+        ManageBeverageRecipeDAO manageBeverageRecipeDAO = new ManageBeverageRecipeDAO(menuPathFile, ingredientPathFile);
+        manageBeverageRecipeDAO.saveToFile();
+        DispensingDrinkDAO dispensingDrinkDAO = new DispensingDrinkDAO(ingredientPathFile, menuPathFile, orderPathFile);
+        dispensingDrinkDAO.saveToFile();
+    }
+    
+    
 
 }
+

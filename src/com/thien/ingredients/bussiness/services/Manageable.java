@@ -5,6 +5,5 @@ public interface Manageable {
     public void update(String id);
     public void delete(String id);
     public void showAll();
-
-    public boolean isExit(String id);
+    
 }

@@ -97,8 +97,8 @@ public class ManageIngredientDAO implements Manageable {
             System.out.println(i.toString());
         }
         System.out.println(" ------------------------------------------------------------------ ");
-        ingredientMap.get("I0").setIngredientStatus(IngredientStatus.AVAILABLE);
-        System.out.println(ingredientMap.get("I0").getIngredientStatus());
+//        ingredientMap.get("I0").setIngredientStatus(IngredientStatus.AVAILABLE);
+//        System.out.println(ingredientMap.get("I0").getIngredientStatus());
     }
 
     private List<Ingredient> converMapToList() {
@@ -117,14 +117,14 @@ public class ManageIngredientDAO implements Manageable {
         System.out.println(" ------------------------------------------------------------------ ");
     }
 
-    @Override
     public boolean isExit(String id) {
         if (ingredientMap.get(id) != null) return true;
         return false;
     }
  
     public void saveToFile() {
-        ingredientDAL.saveToFile(converMapToList(), ingredientPathFile);
+        if (!ingredientMap.isEmpty())
+            ingredientDAL.saveToFile(converMapToList(), ingredientPathFile);
     }
 
 }

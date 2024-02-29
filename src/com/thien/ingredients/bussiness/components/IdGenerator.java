@@ -1,6 +1,5 @@
 package com.thien.ingredients.bussiness.components;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public class IdGenerator {
@@ -11,22 +10,28 @@ public class IdGenerator {
     public IdGenerator(Map<String, ?> map, String prefixId) {
         this.prefixId = prefixId;
         this.currentMaxId = 0;
+        
         if (map != null && !map.isEmpty()) {
-            Iterator<String> iterator = map.keySet().iterator();
-            int tempNumber;
-
-            while (iterator.hasNext()) {
-                String currentMaxIdString = "" + iterator.next().substring(prefixId.length()-1, iterator.next().length()-1);
-                tempNumber = Integer.parseInt(currentMaxIdString);
-                if (tempNumber > this.currentMaxId) {
-                    this.currentMaxId = tempNumber;
+            for (String key : map.keySet()) {
+                if (key.startsWith(prefixId)) {
+                    String numericPart = key.substring(prefixId.length()); // Lấy phần số sau tiền tố
+                    try {
+                        int numericValue = Integer.parseInt(numericPart);
+                        if (numericValue > this.currentMaxId) {
+                            this.currentMaxId = numericValue;
+                        }
+                    } catch (NumberFormatException e) {
+                        // Xử lý trường hợp không thể chuyển đổi thành số
+                        // Có thể thông báo lỗi hoặc bỏ qua
+                        System.err.println("ID Genertator error");
+                    }
                 }
             }
         }
     }
 
     public String generateId() {
-        return this.prefixId + currentMaxId++;
+        return this.prefixId + (++currentMaxId);
     }
 
 }

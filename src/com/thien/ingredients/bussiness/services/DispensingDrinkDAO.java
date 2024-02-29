@@ -9,7 +9,7 @@ import com.thien.ingredients.bussiness.components.DataValidation;
 import com.thien.ingredients.bussiness.components.IdGenerator;
 import com.thien.ingredients.bussiness.model.Ingredient;
 import com.thien.ingredients.bussiness.model.IngredientStatus;
-import com.thien.ingredients.bussiness.model.MenuItem;
+import com.thien.ingredients.bussiness.model.BeverageRecipe;
 import com.thien.ingredients.bussiness.model.Order;
 import com.thien.ingredients.data.repository.OrderDAL;
 import com.thien.ingredients.gui.utilities.DataInputter;
@@ -18,14 +18,15 @@ public class DispensingDrinkDAO implements Dispensable {
 
     private Map<String, Order> orderMap;
     private Map<String, Ingredient> ingredientMap;
-    private Map<String, MenuItem> menuItemMap;
-
+    private Map<String, BeverageRecipe> menuItemMap;
+    private OrderDAL orderDAL;
+    private String orderPathFile;
 
     public DispensingDrinkDAO(String ingredientPathFile, String menuPathFile, String orderPathFile) {
         ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
         this.ingredientMap = manageIngredientDAO.ingredientMap;
 
-        ManageMenuItemDAO manageMenuItemDAO = new ManageMenuItemDAO(menuPathFile, ingredientPathFile);
+        ManageBeverageRecipeDAO manageMenuItemDAO = new ManageBeverageRecipeDAO(menuPathFile, ingredientPathFile);
         this.menuItemMap = manageMenuItemDAO.menuItemMap;
 
         OrderDAL orderDAL = new OrderDAL();
@@ -34,6 +35,8 @@ public class DispensingDrinkDAO implements Dispensable {
         for (Order o : list) {
             orderMap.put(o.getId(), o);
         }
+        this.orderDAL = new OrderDAL();
+        this.orderPathFile = orderPathFile;
     }
     
     @Override
@@ -70,7 +73,20 @@ public class DispensingDrinkDAO implements Dispensable {
         
     }
     
-    public boolean checkIngredient() {
-        
+    public void saveToFile() {
+        if (!orderMap.isEmpty())
+            orderDAL.saveToFile(converMapToList(), orderPathFile);
     }
-}
+    
+    public boolean checkIngredient(String id) {
+        return ingredientMap.containsKey(id);
+    }
+    
+    private List<Order> converMapToList() {
+        List<Order> list = new ArrayList<Order>();
+        for (Order o : orderMap.values()) {
+            list.add(o);
+        }
+        return list;
+    }
+

@@ -137,16 +137,13 @@ public class DataInputter {
      * @return True: Yes; False: Others
      */
     public static boolean getYN(String msg) {
-        String choice; boolean flag=true;
-        while (flag) {
+        String choice;
+        
             System.out.println(msg);
             System.out.print("Y to continue - Others key to exit: ");
             choice = sc.nextLine();
-            flag = choice.equalsIgnoreCase("Y");
-            //if (!flag)
-            //    System.err.println("Another ");
-        }
-        return flag;
+            
+        return choice.equalsIgnoreCase("Y");
     }
 }
 

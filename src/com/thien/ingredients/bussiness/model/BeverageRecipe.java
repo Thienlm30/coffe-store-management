@@ -12,7 +12,7 @@ public class BeverageRecipe {
     public BeverageRecipe(String id, String name, Map<String, Integer> beverageRecipeIngredients) {
         this.id = id;
         this.name = name;
-        this.beverageRecipeIngredients = new TreeMap<String, Integer>();
+        this.beverageRecipeIngredients = new TreeMap<>(beverageRecipeIngredients);
     }
 
     public String getId() {
@@ -37,16 +37,15 @@ public class BeverageRecipe {
 
     @Override
     public String toString() {
-        return String.format("|%10s|%30S|%30s|", id, name, beverageRecipeIngredientsToString());
+        return String.format("|%-10s|%30S|%35s|", id, name, beverageRecipeIngredientsToString());
     }
 
     private String beverageRecipeIngredientsToString() {
         String result = "";
         if (beverageRecipeIngredients != null) 
-            for(String i : beverageRecipeIngredients.keySet()){
-                result += i + " ";
+            for(Map.Entry<String, Integer> b : beverageRecipeIngredients.entrySet()){
+                result += b.getKey() + "(" + b.getValue() + ")" + " ";
             }
-        
         return result;
     }
 }

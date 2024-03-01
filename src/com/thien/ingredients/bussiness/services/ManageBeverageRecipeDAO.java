@@ -22,12 +22,12 @@ public class ManageBeverageRecipeDAO implements Manageable {
     public ManageBeverageRecipeDAO(String menuPathFile, String ingredientPathFile) {
         menuDAL = new MenuDAL();
         
-        this.beverageRecipeMap = new HashMap<String, BeverageRecipe>();
+        this.beverageRecipeMap = new HashMap<>();
         
-        List<BeverageRecipe> list = new ArrayList<BeverageRecipe>();
-        menuDAL.loadFromFile(list, menuPathFile);
-        for (BeverageRecipe m : list) {
-            beverageRecipeMap.put(m.getId(), m);
+        List<BeverageRecipe> listMenu = new ArrayList<>();
+        menuDAL.loadFromFile(listMenu, menuPathFile);
+        for (BeverageRecipe b : listMenu) {
+            this.beverageRecipeMap.put(b.getId(), b);
         }
         this.ingredientPathFile = ingredientPathFile;
         this.menuPathFile = menuPathFile; 
@@ -85,14 +85,14 @@ public class ManageBeverageRecipeDAO implements Manageable {
         System.out.println(" ------------------------------------------------------------------------- ");
         List<BeverageRecipe> list = converMapToList();
         list.sort((i1, i2) -> i2.getName().compareToIgnoreCase(i1.getName()));
-        for (BeverageRecipe m : list) {
-            System.out.println(m.toString());
+        for (BeverageRecipe b : list) {
+            System.out.println(b.toString());
         }
         System.out.println(" ------------------------------------------------------------------------- ");
     }
 
     private List<BeverageRecipe> converMapToList() {
-        List<BeverageRecipe> list = new ArrayList<BeverageRecipe>();
+        List<BeverageRecipe> list = new ArrayList<>();
         for (BeverageRecipe m : beverageRecipeMap.values()) {
             list.add(m);
         }
@@ -111,7 +111,7 @@ public class ManageBeverageRecipeDAO implements Manageable {
     private Map<String, Integer> ingredientCollection(String prefixId, Map<String, Ingredient> ingredientMap) {
         
         DataValidation dataValidation = new DataValidation();
-        Map<String, Integer> menuItemIngredients = new HashMap<String, Integer>();
+        Map<String, Integer> menuItemIngredients = new HashMap<>();
             // add ingredient list
             System.out.println("You are going to add ingredients to recipe");
             do {

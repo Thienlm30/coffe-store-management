@@ -27,7 +27,7 @@ public class Order {
     
     @Override
     public String toString() {
-        return String.format("|%10s|%40S|", id, menuItemIngredientsToString());
+        return String.format("|-%10s|%40S|", id, menuItemIngredientsToString());
     }
 
     private String menuItemIngredientsToString() {

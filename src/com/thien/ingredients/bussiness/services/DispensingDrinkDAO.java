@@ -8,7 +8,6 @@ import java.util.Map;
 import com.thien.ingredients.bussiness.components.DataValidation;
 import com.thien.ingredients.bussiness.components.IdGenerator;
 import com.thien.ingredients.bussiness.model.Ingredient;
-import com.thien.ingredients.bussiness.model.IngredientStatus;
 import com.thien.ingredients.bussiness.model.BeverageRecipe;
 import com.thien.ingredients.bussiness.model.Order;
 import com.thien.ingredients.data.repository.OrderDAL;
@@ -18,7 +17,7 @@ public class DispensingDrinkDAO implements Dispensable {
 
     private Map<String, Order> orderMap;
     private Map<String, Ingredient> ingredientMap;
-    private Map<String, BeverageRecipe> menuItemMap;
+    private Map<String, BeverageRecipe> beverageRecipeMap;
     private OrderDAL orderDAL;
     private String orderPathFile;
 
@@ -26,11 +25,11 @@ public class DispensingDrinkDAO implements Dispensable {
         ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
         this.ingredientMap = manageIngredientDAO.ingredientMap;
 
-        ManageBeverageRecipeDAO manageMenuItemDAO = new ManageBeverageRecipeDAO(menuPathFile, ingredientPathFile);
-        this.menuItemMap = manageMenuItemDAO.menuItemMap;
+        ManageBeverageRecipeDAO manageBeverageRecipeDAO = new ManageBeverageRecipeDAO(menuPathFile, ingredientPathFile);
+        this.beverageRecipeMap = manageBeverageRecipeDAO.beverageRecipeMap;
 
         OrderDAL orderDAL = new OrderDAL();
-        List<Order> list = new ArrayList<Order>();
+        List<Order> list = new ArrayList<>();
         orderDAL.loadFromFile(list, orderPathFile);
         for (Order o : list) {
             orderMap.put(o.getId(), o);
@@ -57,7 +56,7 @@ public class DispensingDrinkDAO implements Dispensable {
             String drinkId = dataValidation.inputId(prefixId);
             int quantity;
 
-            if (menuItemMap.get(drinkId) == null ) 
+            if (beverageRecipeMap.get(drinkId) == null ) 
                 System.out.println("There no drink found");
             else {
                 quantity = DataInputter.getInteger("Enter quantity", "Quantity must a number and cannot be less than one", 1);
@@ -83,10 +82,10 @@ public class DispensingDrinkDAO implements Dispensable {
     }
     
     private List<Order> converMapToList() {
-        List<Order> list = new ArrayList<Order>();
+        List<Order> list = new ArrayList<>();
         for (Order o : orderMap.values()) {
             list.add(o);
         }
         return list;
     }
-
+}

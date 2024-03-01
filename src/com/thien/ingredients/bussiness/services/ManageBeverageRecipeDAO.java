@@ -9,6 +9,7 @@ import com.thien.ingredients.bussiness.components.DataValidation;
 import com.thien.ingredients.bussiness.components.IdGenerator;
 import com.thien.ingredients.bussiness.model.Ingredient;
 import com.thien.ingredients.bussiness.model.BeverageRecipe;
+import com.thien.ingredients.bussiness.model.IngredientStatus;
 import com.thien.ingredients.data.repository.MenuDAL;
 import com.thien.ingredients.gui.utilities.DataInputter;
 
@@ -93,8 +94,8 @@ public class ManageBeverageRecipeDAO implements Manageable {
 
     private List<BeverageRecipe> converMapToList() {
         List<BeverageRecipe> list = new ArrayList<>();
-        for (BeverageRecipe m : beverageRecipeMap.values()) {
-            list.add(m);
+        for (BeverageRecipe b : beverageRecipeMap.values()) {
+            list.add(b);
         }
         return list;
     }
@@ -118,9 +119,12 @@ public class ManageBeverageRecipeDAO implements Manageable {
                 String ingredientId = dataValidation.inputId(prefixId);
                 int ingredientQuantity;
                 
-                if (ingredientMap.containsKey(ingredientId)) 
+                if (ingredientMap.containsKey(ingredientId))
                     System.out.println("No ingredient found");
                 else {
+                      // Set ingredient status
+//                    if (ingredientMap.get(ingredientId).getIngredientStatus() != null)
+//                        ingredientMap.get(ingredientId).setIngredientStatus(IngredientStatus.AVAILABLE);
                     ingredientQuantity = DataInputter.getInteger("Enter ingredient quantity: ", "Quantity must be a number and cannot be less than zero", 0);;
                     menuItemIngredients.put(ingredientId, ingredientQuantity);
                 }
@@ -128,8 +132,15 @@ public class ManageBeverageRecipeDAO implements Manageable {
     
             return menuItemIngredients;
 
-        }
-
+    }
+    
+    
+    /**
+     * This function check is the beverage recipe exit or not
+     * Can be use in the controller class
+     * @param id
+     * @return 
+     */
     public boolean isExit(String id) {
         return beverageRecipeMap.containsKey(id);
     }

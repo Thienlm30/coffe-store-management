@@ -14,7 +14,7 @@ public class IdGenerator {
         if (map != null && !map.isEmpty()) {
             for (String key : map.keySet()) {
                 if (key.startsWith(prefixId)) {
-                    String numericPart = key.substring(prefixId.length()); // Lấy phần số sau tiền tố
+                    String numericPart = key.substring(prefixId.length()); // Get the number after prefix
                     try {
                         int numericValue = Integer.parseInt(numericPart);
                         if (numericValue > this.currentMaxId) {

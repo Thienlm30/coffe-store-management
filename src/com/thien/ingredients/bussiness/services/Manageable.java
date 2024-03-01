@@ -1,9 +1,9 @@
 package com.thien.ingredients.bussiness.services;
 
 public interface Manageable {
-    public void addNew(String prefixId);
-    public void update(String id);
-    public void delete(String id);
-    public void showAll();
+    void addNew(String prefixId);
+    void update(String id);
+    void delete(String id);
+    void showAll();
     
 }

@@ -17,7 +17,6 @@ public class ReportDAO implements Reportable {
         
     }
 
-    @Override
     public boolean isExit(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'isExit'");

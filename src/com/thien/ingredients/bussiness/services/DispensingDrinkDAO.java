@@ -10,6 +10,7 @@ import com.thien.ingredients.bussiness.components.IdGenerator;
 import com.thien.ingredients.bussiness.model.Ingredient;
 import com.thien.ingredients.bussiness.model.BeverageRecipe;
 import com.thien.ingredients.bussiness.model.Order;
+import com.thien.ingredients.bussiness.model.OrderStatus;
 import com.thien.ingredients.data.repository.OrderDAL;
 import com.thien.ingredients.gui.utilities.DataInputter;
 
@@ -38,17 +39,27 @@ public class DispensingDrinkDAO implements Dispensable {
         this.orderPathFile = orderPathFile;
     }
     
+    /** 
+     * This method dispensing drinks that have been ordered
+     * The order's status is preparing
+     * @param prefixId is prefix of the order's id
+     */
     @Override
     public void dispensingDrink(String prefixId) {
         IdGenerator idGenerator = new IdGenerator(orderMap, prefixId);
         String id = idGenerator.generateId();
-
+        
         Map<String, Integer> drinkMap = dirnkCollection("D");
         
-        Order order = new Order(id, drinkMap);
-
+        orderMap.put(id, new Order(id, drinkMap));
+        orderMap.get(id).setOrderStatus(OrderStatus.PREPARING);
     }
-
+    
+    /**
+     * This method return the list of order drink and it's quantity 
+     * @param prefixId is the prefix of the drink's id
+     * @return a list contain drinks order
+     */
     private Map<String, Integer> dirnkCollection(String prefixId) {
         Map <String, Integer> drinkMap = new HashMap<>();
         DataValidation dataValidation = new DataValidation();
@@ -63,7 +74,7 @@ public class DispensingDrinkDAO implements Dispensable {
                 drinkMap.put(drinkId, quantity);
             }
 
-        } while (DataInputter.getYN("Are you sure to order?"));
+        } while (!DataInputter.getYN("Are you sure to order?"));
         return drinkMap;
     }
 
@@ -73,10 +84,18 @@ public class DispensingDrinkDAO implements Dispensable {
     }
     
     public void saveToFile() {
-        if (!orderMap.isEmpty())
+        try {
             orderDAL.saveToFile(converMapToList(), orderPathFile);
+        } catch (Exception e) {
+            System.out.println("Save order fail");
+        }
     }
     
+    /**
+     * ?????
+     * @param id
+     * @return 
+     */
     public boolean checkIngredient(String id) {
         return ingredientMap.containsKey(id);
     }

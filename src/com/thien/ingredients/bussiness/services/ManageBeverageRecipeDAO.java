@@ -85,6 +85,7 @@ public class ManageBeverageRecipeDAO implements Manageable {
         System.out.println("|    ID    |             Name             |             Recipe            |");
         System.out.println(" ------------------------------------------------------------------------- ");
         List<BeverageRecipe> list = converMapToList();
+        // sort by name
         list.sort((i1, i2) -> i2.getName().compareToIgnoreCase(i1.getName()));
         for (BeverageRecipe b : list) {
             System.out.println(b.toString());
@@ -146,8 +147,11 @@ public class ManageBeverageRecipeDAO implements Manageable {
     }
 
     public void saveToFile() {
-        if (!beverageRecipeMap.isEmpty())
+        try {
             menuDAL.saveToFile(converMapToList(), menuPathFile);
+        } catch (Exception e) {
+            System.out.println("Save beverage recipe fail");
+        }
     }
     
 }

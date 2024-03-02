@@ -123,8 +123,11 @@ public class ManageIngredientDAO implements Manageable {
     }
  
     public void saveToFile() {
-        if (!ingredientMap.isEmpty())
+        try {
             ingredientDAL.saveToFile(converMapToList(), ingredientPathFile);
+        } catch (Exception e) {
+            System.out.println("Save ingredient fail");
+        }
     }
 
 }

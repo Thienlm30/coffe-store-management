@@ -8,6 +8,7 @@ public class BeverageRecipe {
     private String id;
     private String name;
     private Map<String, Integer> beverageRecipeIngredients;
+    private BeverageRecipeStatus beverageRecipeStatus;
     
     public BeverageRecipe(String id, String name, Map<String, Integer> beverageRecipeIngredients) {
         this.id = id;
@@ -27,14 +28,22 @@ public class BeverageRecipe {
         this.name = name;
     }
 
-    public Map<String, Integer> getMenuItemIngredients() {
+    public Map<String, Integer> getBeverageRecipeIngredients() {
         return beverageRecipeIngredients;
     }
 
-    public void setMenuItemIngredients(Map<String, Integer> beverageRecipeIngredients) {
+    public void setBeverageRecipeIngredients(Map<String, Integer> beverageRecipeIngredients) {
         this.beverageRecipeIngredients = beverageRecipeIngredients;
     }
 
+    public BeverageRecipeStatus getBeverageRecipeStatus() {
+        return beverageRecipeStatus;
+    }
+
+    public void setBeverageRecipeStatus(BeverageRecipeStatus beverageRecipeStatus) {
+        this.beverageRecipeStatus = beverageRecipeStatus;
+    }
+    
     @Override
     public String toString() {
         return String.format("|%-10s|%30S|%35s|", id, name, beverageRecipeIngredientsToString());

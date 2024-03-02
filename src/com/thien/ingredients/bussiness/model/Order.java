@@ -6,23 +6,32 @@ import java.util.Map;
 public class Order {
     
     private String id;
-    private Map<String, Integer> orderMenuItem;
+    private Map<String, Integer> orderBeverageRecipe;
+    private OrderStatus orderStatus;
 
-    public Order(String id, Map<String, Integer> orderMenuItem) {
+    public Order(String id, Map<String, Integer> orderBeverageRecipe) {
         this.id = id;
-        this.orderMenuItem = orderMenuItem;
+        this.orderBeverageRecipe = orderBeverageRecipe;
     }
 
     public String getId() {
         return id;
     }
 
-    public Map<String, Integer> getorderMenuItem() {
-        return orderMenuItem;
+    public Map<String, Integer> getOrderBeverageRecipe() {
+        return orderBeverageRecipe;
     }
 
-    public void setorderMenuItem(Map<String, Integer> orderMenuItem) {
-        this.orderMenuItem = orderMenuItem;
+    public void setOrderBeverageRecipe(Map<String, Integer> orderBeverageRecipe) {
+        this.orderBeverageRecipe = orderBeverageRecipe;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
     
     @Override
@@ -32,9 +41,9 @@ public class Order {
 
     private String menuItemIngredientsToString() {
         String result = "";
-        if (orderMenuItem != null) 
-            for(String o : orderMenuItem.keySet()){
-                result += o + " ";
+        if (orderBeverageRecipe != null) 
+            for(Map.Entry<String, Integer> o : orderBeverageRecipe.entrySet()){
+                result += o.getKey() + " ";
             }
         
         return result;

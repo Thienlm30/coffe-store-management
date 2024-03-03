@@ -229,6 +229,7 @@ public class IngredientsController {
     private void saveToFile() {
         
         dispensingDrinkDAO.saveToFile();
+        
         manageIngredientDAO.saveToFile();
         manageBeverageRecipeDAO.saveToFile();
         

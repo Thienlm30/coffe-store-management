@@ -70,7 +70,7 @@ public class ManageIngredientDAO implements Manageable {
                 }
             }
         }
-
+        
         String unit = DataInputter.getStrCanBlank("Enter new ingredient unit (Example: ml, g, cup,...): ");
         if (unit.isEmpty()) unit = ingredientMap.get(id).getUnit();
 

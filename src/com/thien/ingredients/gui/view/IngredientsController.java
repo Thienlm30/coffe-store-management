@@ -88,7 +88,7 @@ public class IngredientsController {
                 case 2:
                     System.out.println("----You are going to update ingredient's information----");
                     String id = dataValidation.inputId(prefixId);
-                    if (!manageIngredientDAO.isExit(id)) System.out.println("There no ingredient found");
+                    if (!manageIngredientDAO.ingredientMap.containsKey(id)) System.out.println("There no ingredient found");
                     else {
                         manageIngredientDAO.display(id); // Show infor before update
                         manageIngredientDAO.update(id);
@@ -137,7 +137,7 @@ public class IngredientsController {
                 case 2:
                     System.out.println("----You are going to update drink recipe information----");
                     String id = dataValidation.inputId(prefixId);
-                    if (!manageBeverageRecipeDAO.isExit(id)) 
+                    if (!manageBeverageRecipeDAO.beverageRecipeMap.containsKey(id)) 
                         System.out.println("There no drink found");
                     else {
                         manageBeverageRecipeDAO.display(id); // Show infor before update
@@ -178,15 +178,13 @@ public class IngredientsController {
                     dispensingDrinkDAO.dispensingDrink(prefixID);
                     break;
                 case 2:
-//                    System.out.println("---You are going to update order---");
-//                    String id = dataValidation.inputId(prefixID);
-//                    if (!dispensingDrinkDAO.orderMap.containsKey(id)) 
-//                        System.out.println("There no order found");
-//                    else {
-//                        dispensingDrinkDAO.updateDispensingDrink(id);
-//                    }
-                     dispensingDrinkDAO.showAll();
-                   
+                    System.out.println("---You are going to update order---");
+                    String id = dataValidation.inputId(prefixID);
+                    if (!dispensingDrinkDAO.orderMap.containsKey(id)) 
+                        System.out.println("There no order found");
+                    else {
+                        dispensingDrinkDAO.updateDispensingDrink(id);
+                    }
                     break;
                 default:
                     System.out.println("---Return to main menu---");
@@ -220,7 +218,8 @@ public class IngredientsController {
                     reportDAO.showAllDispensingDrink();
                     break;
                 default:
-                    throw new AssertionError();
+                    System.out.println("---Return to main menu---");
+                    break;
             }
             
         } while (choice > 0 && choice < 4);
@@ -228,9 +227,11 @@ public class IngredientsController {
     }
     
     private void saveToFile() {
+        
+        dispensingDrinkDAO.saveToFile();
         manageIngredientDAO.saveToFile();
         manageBeverageRecipeDAO.saveToFile();
-        dispensingDrinkDAO.saveToFile();
+        
     }
     
     

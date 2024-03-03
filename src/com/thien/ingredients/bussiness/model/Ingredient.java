@@ -55,7 +55,7 @@ public class Ingredient implements Serializable, Comparable<Ingredient> {
 
     @Override
     public String toString() {
-        return String.format("|%-10s|%-30s|%10d|%10s|", id, name, quantity, unit);
+        return String.format("|%-10s|%-30s|%10d|%10s|%20s|", id, name, quantity, unit, ingredientStatus);
     }
 
     @Override

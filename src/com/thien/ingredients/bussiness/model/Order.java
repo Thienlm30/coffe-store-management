@@ -37,7 +37,7 @@ public class Order implements Serializable {
     
     @Override
     public String toString() {
-        return String.format("|%-10s|%60S|", id, menuItemIngredientsToString());
+        return String.format("|%-10s|%50S|%20s|", id, menuItemIngredientsToString(), orderStatus);
     }
 
     private String menuItemIngredientsToString() {

@@ -76,6 +76,7 @@ public class ManageIngredientDAO implements Manageable {
 
         ingredientMap.get(id).setName(name);
         ingredientMap.get(id).setQuantity(quantity);
+        if (quantity > 0) ingredientMap.get(id).setIngredientStatus(IngredientStatus.AVAILABLE);
         ingredientMap.get(id).setUnit(unit);
     }
 
@@ -83,10 +84,18 @@ public class ManageIngredientDAO implements Manageable {
     public void delete(String id) {
         if  (ingredientMap.get(id) == null) 
             System.out.println("There no ingredient found");
+        else if (ingredientMap.get(id).getIngredientStatus() == null) {
+            display(id);
+            if (DataInputter.getYN("Do you want to delete this ingredient?")) {
+                ingredientMap.remove(id);
+                System.out.println("Delete successful");
+            }
+        }
         else {
             display(id);            
             if (DataInputter.getYN("Do you want to delete this ingredient?")) {
-                ingredientMap.remove(id);
+                ingredientMap.get(id).setIngredientStatus(IngredientStatus.NOT_AVAILABLE);
+                ingredientMap.get(id).setQuantity(0);
                 System.out.println("Delete successful");
             }
         }
@@ -94,15 +103,15 @@ public class ManageIngredientDAO implements Manageable {
 
     @Override
     public void showAll() {
-        System.out.println(" ------------------------------------------------------------------ ");
-        System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |");
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println("+---------------------------------------------------------------------------------------+ ");
+        System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |       Status       |");
+        System.out.println("+---------------------------------------------------------------------------------------+ ");
         List<Ingredient> list = convertMapToList();
         list.sort((i1, i2) -> i2.getName().compareToIgnoreCase(i1.getName()));
         for (Ingredient i : list) {
             System.out.println(i.toString());
         }
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println("+---------------------------------------------------------------------------------------+ ");
 
     }
 
@@ -115,16 +124,11 @@ public class ManageIngredientDAO implements Manageable {
     }
 
     public void display(String id) {
-        System.out.println(" ------------------------------------------------------------------ ");
-        System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |");
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println("+---------------------------------------------------------------------------------------+ ");
+        System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |       Status       |");
+        System.out.println("+---------------------------------------------------------------------------------------+ ");
         System.out.println(ingredientMap.get(id).toString());
-        System.out.println(" ------------------------------------------------------------------ ");
-    }
-
-    public boolean isExit(String id) {
-        if (ingredientMap.get(id) != null) return true;
-        return false;
+        System.out.println("+---------------------------------------------------------------------------------------+ ");
     }
  
     public void saveToFile() {

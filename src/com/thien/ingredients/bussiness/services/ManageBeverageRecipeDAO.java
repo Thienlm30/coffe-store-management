@@ -75,6 +75,13 @@ public class ManageBeverageRecipeDAO implements Manageable {
     public void delete(String id) {
         if (beverageRecipeMap.get(id) == null) 
             System.out.println("There no drink found");
+        else if (beverageRecipeMap.get(id).getBeverageRecipeStatus()== null) {
+            display(id);
+            if (DataInputter.getYN("Do you want to delete this ingredient?")) {
+                beverageRecipeMap.remove(id);
+                System.out.println("Delete successful");
+            }
+        }
         else {
             display(id);
             if (DataInputter.getYN("Do you want to delete this drink recipe?")) {
@@ -86,16 +93,16 @@ public class ManageBeverageRecipeDAO implements Manageable {
 
     @Override
     public void showAll() {
-        System.out.println(" ------------------------------------------------------------------------- ");
-        System.out.println("|    ID    |             Name             |             Recipe            |");
-        System.out.println(" ------------------------------------------------------------------------- ");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
+        System.out.println("|    ID    |             Name             |             Recipe            |       Status       |");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
         List<BeverageRecipe> list = converMapToList();
         // sort by name
         list.sort((i1, i2) -> i2.getName().compareToIgnoreCase(i1.getName()));
         for (BeverageRecipe b : list) {
             System.out.println(b.toString());
         }
-        System.out.println(" ------------------------------------------------------------------------- ");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
     
     }
 
@@ -109,11 +116,11 @@ public class ManageBeverageRecipeDAO implements Manageable {
 
     public void display(String id) {
         
-        System.out.println(" ------------------------------------------------------------------ ");
-        System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |");
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
+        System.out.println("|    ID    |             Name             |             Recipe            |       Status       |");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
         System.out.println(beverageRecipeMap.get(id).toString());
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
     }
 
     private Map<String, Integer> ingredientCollection(String prefixId, Map<String, Ingredient> ingredientMap) {
@@ -139,17 +146,6 @@ public class ManageBeverageRecipeDAO implements Manageable {
     
             return beverageRecipeIngredients;
 
-    }
-    
-    
-    /**
-     * This function check is the beverage recipe exit or not
-     * Can be use in the controller class
-     * @param id
-     * @return 
-     */
-    public boolean isExit(String id) {
-        return beverageRecipeMap.containsKey(id);
     }
 
     public void saveToFile() {

@@ -47,7 +47,7 @@ public class BeverageRecipe implements Serializable, Comparable<BeverageRecipe>{
     
     @Override
     public String toString() {
-        return String.format("|%-10s|%30S|%35s|", id, name, beverageRecipeIngredientsToString());
+        return String.format("|%-10s|%30S|%35s|%20s|", id, name, beverageRecipeIngredientsToString(), beverageRecipeStatus);
     }
 
     private String beverageRecipeIngredientsToString() {

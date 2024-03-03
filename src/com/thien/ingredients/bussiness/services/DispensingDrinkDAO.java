@@ -52,13 +52,17 @@ public class DispensingDrinkDAO implements Dispensable {
      */
     @Override
     public void dispensingDrink(String prefixId) {
-        IdGenerator idGenerator = new IdGenerator(orderMap, prefixId);
-        String id = idGenerator.generateId();
         
-        Map<String, Integer> drinkMap = dirnkCollection("D");
+        Map<String, Integer> orderBeverageRecipe = dirnkCollection("D");
         
-        orderMap.put(id, new Order(id, drinkMap));
-        orderMap.get(id).setOrderStatus(OrderStatus.PREPARING);
+        if (orderBeverageRecipe.isEmpty())
+            System.out.println("emty order");
+        else {
+            IdGenerator idGenerator = new IdGenerator(orderMap, prefixId);
+            String id = idGenerator.generateId();
+            orderMap.put(id, new Order(id, orderBeverageRecipe));
+            orderMap.get(id).setOrderStatus(OrderStatus.PREPARING);
+        }       
     }
     
     /**
@@ -67,7 +71,7 @@ public class DispensingDrinkDAO implements Dispensable {
      * @return a list contain drinks order
      */
     private Map<String, Integer> dirnkCollection(String prefixId) {
-        Map <String, Integer> drinkMap = new HashMap<>();
+        Map <String, Integer> orderBeverageRecipe = new HashMap<>();
         DataValidation dataValidation = new DataValidation();
         do {
             String beverageId = dataValidation.inputId(prefixId);
@@ -86,11 +90,11 @@ public class DispensingDrinkDAO implements Dispensable {
                 if (!isEnoughIngredient(beverageId, quantity))
                     System.out.println("Ingredient not enough");
                 else 
-                    drinkMap.put(beverageId, quantity);
+                    orderBeverageRecipe.put(beverageId, quantity);
             }
 
         } while (DataInputter.getYN("Do you want to countinue order?"));
-        return drinkMap;
+        return orderBeverageRecipe;
     }
     
     private boolean isEnoughIngredient(String beverageId, int quantity) {
@@ -126,26 +130,26 @@ public class DispensingDrinkDAO implements Dispensable {
      * @param id of order
      */
     private void display(String id) {
-        System.out.println(" ------------------------------------------------------------------ ");
-        System.out.println("|    ID    |                     Details                           |");
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println(" -----------------------------------------------------------------------------------+");
+        System.out.println("|    ID    |                      Details                      |       Status       |");
+        System.out.println(" -----------------------------------------------------------------------------------+");
         System.out.println(orderMap.get(id).toString());
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println(" -----------------------------------------------------------------------------------+");
     }
     
     /**
      * This method show all order
      */
     public void showAll() {
-        System.out.println(" ------------------------------------------------------------------------- ");
-        System.out.println("|    ID    |                         Details                              |");
-        System.out.println(" ------------------------------------------------------------------------- ");
+        System.out.println(" ------------------------------------------------------------------------------------+");
+        System.out.println("|    ID    |                     Details                        |       Status       |");
+        System.out.println(" ------------------------------------------------------------------------------------+");
         
         for (Order o : orderMap.values()) {
             System.out.println(o.toString());
         }
         
-        System.out.println(" ------------------------------------------------------------------------- ");
+        System.out.println(" ------------------------------------------------------------------------------------+");
     }
     
     /**
@@ -156,10 +160,45 @@ public class DispensingDrinkDAO implements Dispensable {
     public void saveToFile() {
         try {
             // set status của beverage với ingredient
+            setIngredientStatus();
+            setBeverageStatus();
+            setOrderStatus();
             orderDAL.saveToFile(converMapToList(), orderPathFile);
         } catch (Exception e) {
             System.out.println("Save order fail");
         }
+    }
+
+    private void setIngredientStatus() {
+        for (Order o : orderMap.values()) {
+            if (o.getOrderStatus() == OrderStatus.PREPARING)
+                for (String key : o.getOrderBeverageRecipe().keySet()) {
+                    Map<String, Integer> map = manageBeverageRecipeDAO.beverageRecipeMap.get(key).getBeverageRecipeIngredients();
+                    for (String s : map.keySet()) {
+                        int currentQuantity = manageIngredientDAO.ingredientMap.get(s).getQuantity();
+                        int quantityToSubtract = map.get(key);
+                        manageIngredientDAO.ingredientMap.get(s).setQuantity(currentQuantity - quantityToSubtract);
+                        currentQuantity = manageIngredientDAO.ingredientMap.get(s).getQuantity();
+                        if (currentQuantity <= 0 ) manageIngredientDAO.ingredientMap.get(key).setIngredientStatus(IngredientStatus.OUT_OF_STOCK);
+                        else manageIngredientDAO.ingredientMap.get(key).setIngredientStatus(IngredientStatus.AVAILABLE);
+                    }
+                }
+        }
+    }
+    
+    private void setBeverageStatus() {
+        for (Order o : orderMap.values()) {
+            if (o.getOrderStatus() == OrderStatus.PREPARING)
+                for (String key : o.getOrderBeverageRecipe().keySet()) {
+                    manageBeverageRecipeDAO.beverageRecipeMap.get(key).setBeverageRecipeStatus(BeverageRecipeStatus.AVAILABLE);
+                }
+        }
+    }
+    
+    private void setOrderStatus() {
+        for (Order o : orderMap.values()) {
+            o.setOrderStatus(OrderStatus.DONE);
+        } 
     }
     
     private List<Order> converMapToList() {

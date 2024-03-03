@@ -21,16 +21,16 @@ public class ReportDAO implements Reportable {
 
     @Override
     public void availableIngredient() {
-        System.out.println(" ------------------------------------------------------------------ ");
-        System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |");
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println("+---------------------------------------------------------------------------------------+");
+        System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |       Status       |");
+        System.out.println("+---------------------------------------------------------------------------------------+");
 
         for (Ingredient i : manageIngredientDAO.ingredientMap.values()) {
             if (i.getIngredientStatus() == IngredientStatus.AVAILABLE)
                 System.out.println(i.toString());
         }
         
-        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println("+---------------------------------------------------------------------------------------+");
 
     }
 
@@ -46,26 +46,21 @@ public class ReportDAO implements Reportable {
             }
         }
         
-        System.out.println(" ------------------------------------------------------------------------- ");
-        System.out.println("|    ID    |             Name             |             Recipe            |");
-        System.out.println(" ------------------------------------------------------------------------- ");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
+        System.out.println("|    ID    |             Name             |             Recipe            |       Status       |");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
         
         for (BeverageRecipe b : set) {
             System.out.println(b.toString());
         }
         
-        System.out.println(" ------------------------------------------------------------------------- ");
+        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
     
     }
 
     @Override
     public void showAllDispensingDrink() {
         dispensingDrinkDAO.showAll();
-    }
-
-    public boolean isExit(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isExit'");
     }
     
 }

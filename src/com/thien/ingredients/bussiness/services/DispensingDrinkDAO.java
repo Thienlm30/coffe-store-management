@@ -21,12 +21,13 @@ public class DispensingDrinkDAO implements Dispensable {
     private Map<String, BeverageRecipe> beverageRecipeMap;
     private OrderDAL orderDAL;
     private String orderPathFile;
+    private ManageIngredientDAO manageIngredientDAO;
+    private ManageBeverageRecipeDAO manageBeverageRecipeDAO;
 
-    public DispensingDrinkDAO(String ingredientPathFile, String menuPathFile, String orderPathFile) {
-        ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
+    public DispensingDrinkDAO(ManageIngredientDAO manageIngredientDAO, ManageBeverageRecipeDAO manageBeverageRecipeDAO, String orderPathFile) {
+        this.manageIngredientDAO = manageIngredientDAO;
+        this.manageBeverageRecipeDAO = manageBeverageRecipeDAO;
         this.ingredientMap = manageIngredientDAO.ingredientMap;
-
-        ManageBeverageRecipeDAO manageBeverageRecipeDAO = new ManageBeverageRecipeDAO(menuPathFile, ingredientPathFile);
         this.beverageRecipeMap = manageBeverageRecipeDAO.beverageRecipeMap;
 
         OrderDAL orderDAL = new OrderDAL();

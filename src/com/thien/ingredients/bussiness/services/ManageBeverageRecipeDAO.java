@@ -15,39 +15,42 @@ import com.thien.ingredients.gui.utilities.DataInputter;
 
 public class ManageBeverageRecipeDAO implements Manageable {
 
-    Map<String, BeverageRecipe> beverageRecipeMap;
+    public Map<String, BeverageRecipe> beverageRecipeMap;
     private MenuDAL menuDAL;
-    private String ingredientPathFile;
+    private Map<String, Ingredient> ingredientMap;
     private String menuPathFile;
     
-    public ManageBeverageRecipeDAO(String menuPathFile, String ingredientPathFile) {
-        menuDAL = new MenuDAL();
+    public ManageBeverageRecipeDAO(String menuPathFile, ManageIngredientDAO manageIngredientDAO) {
+        this.menuDAL = new MenuDAL();
         
-        this.beverageRecipeMap = new HashMap<>();
-        
-        List<BeverageRecipe> listMenu = new ArrayList<>();
-        menuDAL.loadFromFile(listMenu, menuPathFile);
-        for (BeverageRecipe b : listMenu) {
-            this.beverageRecipeMap.put(b.getId(), b);
+        List<BeverageRecipe> listBevarage = new ArrayList<>();
+        if (menuDAL.loadFromFile(listBevarage, menuPathFile)) {
+            this.beverageRecipeMap = new HashMap<>();
+            for (BeverageRecipe b : listBevarage) {
+                this.beverageRecipeMap.put(b.getId(), b);
+            }
+            System.out.println("load thanh cong tu beverage recipe constructor");
+        } else {
+            System.err.println("Error loading beverage from constructor");
         }
-        this.ingredientPathFile = ingredientPathFile;
+        
+        this.ingredientMap = ManageIngredientDAO.ingredientMap;
         this.menuPathFile = menuPathFile; 
     }
 
     @Override
     public void addNew(String prefixId) {
-    
+        
         IdGenerator idGenerator = new IdGenerator(beverageRecipeMap, prefixId);
         String id = idGenerator.generateId();
         String name = DataInputter.getNonBlankString("Enter drink name :", "Name cannot be blank");
-        ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
         
         // Input menuItemIngredient 
-        Map<String, Integer> menuItemIngredient = ingredientCollection("I", manageIngredientDAO.ingredientMap);
+        Map<String, Integer> menuItemIngredient = ingredientCollection("I", ingredientMap);
 
-        BeverageRecipe menuItem = new BeverageRecipe(id, name, menuItemIngredient);
+        BeverageRecipe beverageRecipe = new BeverageRecipe(id, name, menuItemIngredient);
 
-        beverageRecipeMap.put(menuItem.getId(), menuItem);
+        beverageRecipeMap.put(beverageRecipe.getId(), beverageRecipe);
 
     }
 
@@ -57,12 +60,11 @@ public class ManageBeverageRecipeDAO implements Manageable {
         if (name.isEmpty()) name = beverageRecipeMap.get(id).getName();
 
         if (DataInputter.getYN("Do you want to update drink recipe?")) {
-            ManageIngredientDAO manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
 
             // Input menuItemIngredient 
-            Map<String, Integer> menuItemIngredient = ingredientCollection("I", manageIngredientDAO.ingredientMap);
+            Map<String, Integer> menuItemIngredient = ingredientCollection("I", ingredientMap);
 
-            beverageRecipeMap.get(id).setMenuItemIngredients(menuItemIngredient);
+            beverageRecipeMap.get(id).setBeverageRecipeIngredients(menuItemIngredient);
         }
     }
 
@@ -113,25 +115,25 @@ public class ManageBeverageRecipeDAO implements Manageable {
     private Map<String, Integer> ingredientCollection(String prefixId, Map<String, Ingredient> ingredientMap) {
         
         DataValidation dataValidation = new DataValidation();
-        Map<String, Integer> menuItemIngredients = new HashMap<>();
+        Map<String, Integer> beverageRecipeIngredients = new HashMap<>();
             // add ingredient list
             System.out.println("You are going to add ingredients to recipe");
             do {
                 String ingredientId = dataValidation.inputId(prefixId);
                 int ingredientQuantity;
                 
-                if (ingredientMap.containsKey(ingredientId))
+                if (!ingredientMap.containsKey(ingredientId))
                     System.out.println("No ingredient found");
                 else {
                       // Set ingredient status
 //                    if (ingredientMap.get(ingredientId).getIngredientStatus() != null)
 //                        ingredientMap.get(ingredientId).setIngredientStatus(IngredientStatus.AVAILABLE);
                     ingredientQuantity = DataInputter.getInteger("Enter ingredient quantity: ", "Quantity must be a number and cannot be less than zero", 0);;
-                    menuItemIngredients.put(ingredientId, ingredientQuantity);
+                    beverageRecipeIngredients.put(ingredientId, ingredientQuantity);
                 }
             } while (DataInputter.getYN("Do you want to continue add ingredient to recipe?"));
     
-            return menuItemIngredients;
+            return beverageRecipeIngredients;
 
     }
     

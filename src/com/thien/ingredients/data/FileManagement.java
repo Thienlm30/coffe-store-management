@@ -100,6 +100,7 @@ public class FileManagement {
         } catch (IOException e) {
             System.out.println(e);
         }
+        System.out.println("luu thanh cong tu file management saveToFile()");
         return false;
     }
     

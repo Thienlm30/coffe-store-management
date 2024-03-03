@@ -1,9 +1,10 @@
 package com.thien.ingredients.bussiness.model;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BeverageRecipe {
+public class BeverageRecipe implements Serializable, Comparable<BeverageRecipe>{
 
     private String id;
     private String name;
@@ -56,5 +57,10 @@ public class BeverageRecipe {
                 result += b.getKey() + "(" + b.getValue() + ")" + " ";
             }
         return result;
+    }
+
+    @Override
+    public int compareTo(BeverageRecipe o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

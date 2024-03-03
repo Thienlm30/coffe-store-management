@@ -1,9 +1,10 @@
 package com.thien.ingredients.bussiness.model;
 
+import java.io.Serializable;
 import java.util.Map;
 
 
-public class Order {
+public class Order implements Serializable {
     
     private String id;
     private Map<String, Integer> orderBeverageRecipe;

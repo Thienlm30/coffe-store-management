@@ -13,11 +13,11 @@ public class MenuDAL {
         this.fileManagement = new FileManagement();
     }
 
-    public boolean loadFromFile(List<BeverageRecipe> menuItemList, String menuPathFile) {
-        return fileManagement.loadListFromFile(menuItemList, menuPathFile);
+    public boolean loadFromFile(List<BeverageRecipe> beverageRecipeList, String menuPathFile) {
+        return fileManagement.loadListFromFile(beverageRecipeList, menuPathFile);
     }
     
     public boolean saveToFile(List<BeverageRecipe> menuItemList, String menuPathFile) {
-        return fileManagement.saveListToFile(menuItemList, menuPathFile, "Save MenuItem to file successfully!");
+        return fileManagement.saveListToFile(menuItemList, menuPathFile, "Save beverage recipe to file successfully!");
     }
 }

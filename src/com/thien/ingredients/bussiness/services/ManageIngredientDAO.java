@@ -13,20 +13,24 @@ import com.thien.ingredients.gui.utilities.DataInputter;
 
 public class ManageIngredientDAO implements Manageable {
 
-    public Map<String, Ingredient> ingredientMap;
-    private IngredientDAL ingredientDAL;
-    private String ingredientPathFile;
+        public Map<String, Ingredient> ingredientMap;
+        private IngredientDAL ingredientDAL;
+        private String ingredientPathFile;
 
-    public ManageIngredientDAO(String ingredientPathFile) {
-        ingredientDAL = new IngredientDAL();
-        List<Ingredient> list = new ArrayList<Ingredient>();
-        ingredientDAL.loadFromFile(list, ingredientPathFile);
-        ingredientMap = new HashMap<String, Ingredient>();
-        for (Ingredient i : list) {
-            ingredientMap.put(i.getId(), i);
+        public ManageIngredientDAO(String ingredientPathFile) {
+            this.ingredientDAL = new IngredientDAL();
+            List<Ingredient> list = new ArrayList<>();
+            if (ingredientDAL.loadFromFile(list, ingredientPathFile)) {
+                this.ingredientMap = new HashMap<>();
+                for (Ingredient i : list) {
+                    this.ingredientMap.put(i.getId(), i);
+                }
+                System.out.println("Load thanh cong tu ingredient constructor");
+            } else {
+                System.err.println("Error loading ingredients from constructor");
+            }
+            this.ingredientPathFile = ingredientPathFile;
         }
-        this.ingredientPathFile = ingredientPathFile;
-    }
 
     @Override
     public void addNew(String prefixId) {
@@ -91,18 +95,17 @@ public class ManageIngredientDAO implements Manageable {
         System.out.println(" ------------------------------------------------------------------ ");
         System.out.println("|    ID    |             Name             |   Quantity  |   Unit   |");
         System.out.println(" ------------------------------------------------------------------ ");
-        List<Ingredient> list = converMapToList();
+        List<Ingredient> list = convertMapToList();
         list.sort((i1, i2) -> i2.getName().compareToIgnoreCase(i1.getName()));
         for (Ingredient i : list) {
             System.out.println(i.toString());
         }
         System.out.println(" ------------------------------------------------------------------ ");
-//        ingredientMap.get("I0").setIngredientStatus(IngredientStatus.AVAILABLE);
-//        System.out.println(ingredientMap.get("I0").getIngredientStatus());
+
     }
 
-    private List<Ingredient> converMapToList() {
-        List<Ingredient> list = new ArrayList<Ingredient>();
+    private List<Ingredient> convertMapToList() {
+        List<Ingredient> list = new ArrayList<>();
         for (Ingredient i : ingredientMap.values()) {
             list.add(i);
         }
@@ -124,7 +127,7 @@ public class ManageIngredientDAO implements Manageable {
  
     public void saveToFile() {
         try {
-            ingredientDAL.saveToFile(converMapToList(), ingredientPathFile);
+            ingredientDAL.saveToFile(convertMapToList(), ingredientPathFile);
         } catch (Exception e) {
             System.out.println("Save ingredient fail");
         }

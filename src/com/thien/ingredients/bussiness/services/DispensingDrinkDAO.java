@@ -8,6 +8,8 @@ import java.util.TreeMap;
 
 import com.thien.ingredients.bussiness.components.DataValidation;
 import com.thien.ingredients.bussiness.components.IdGenerator;
+import com.thien.ingredients.bussiness.model.BeverageRecipeStatus;
+import com.thien.ingredients.bussiness.model.IngredientStatus;
 import com.thien.ingredients.bussiness.model.Order;
 import com.thien.ingredients.bussiness.model.OrderStatus;
 import com.thien.ingredients.data.repository.OrderDAL;
@@ -71,8 +73,13 @@ public class DispensingDrinkDAO implements Dispensable {
             String beverageId = dataValidation.inputId(prefixId);
             int quantity;
 
+            // check drink id
             if (manageBeverageRecipeDAO.beverageRecipeMap.get(beverageId) == null ) 
                 System.out.println("There no drink found");
+            // check drink status
+            else if (manageBeverageRecipeDAO.beverageRecipeMap.get(beverageId).getBeverageRecipeStatus() == BeverageRecipeStatus.NOT_AVAILABLE) 
+                System.out.println("Drink are not availabe");
+            // check ingredient in recipe
             else {
                 quantity = DataInputter.getInteger("Enter quantity: ", "Quantity must a number and cannot be less than one", 1);
                 // check ingredient quantity
@@ -89,7 +96,7 @@ public class DispensingDrinkDAO implements Dispensable {
     private boolean isEnoughIngredient(String beverageId, int quantity) {
         Map<String, Integer> map = manageBeverageRecipeDAO.beverageRecipeMap.get(beverageId).getBeverageRecipeIngredients();
         for (String s : map.keySet()) {
-            if (manageIngredientDAO.ingredientMap.get(s).getQuantity() < map.get(s) * quantity)
+            if (manageIngredientDAO.ingredientMap.get(s).getQuantity() < map.get(s) * quantity || !(manageIngredientDAO.ingredientMap.get(s).getIngredientStatus() == IngredientStatus.AVAILABLE))
                 return false;
         }
         return true;

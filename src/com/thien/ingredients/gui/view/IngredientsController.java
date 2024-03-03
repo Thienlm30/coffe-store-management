@@ -21,7 +21,7 @@ public class IngredientsController {
         this.manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
         this.manageBeverageRecipeDAO = new ManageBeverageRecipeDAO(menuPathFile, manageIngredientDAO);
         this.dispensingDrinkDAO = new DispensingDrinkDAO(manageIngredientDAO, manageBeverageRecipeDAO, orderPathFile);
-        this.reportDAO = new ReportDAO();
+        this.reportDAO = new ReportDAO(manageIngredientDAO, manageBeverageRecipeDAO, dispensingDrinkDAO);
     }
     
     public void mainMenu(String menutitle) {
@@ -211,7 +211,13 @@ public class IngredientsController {
             
             switch (choice) {
                 case 1:
-                    
+                    reportDAO.availableIngredient();
+                    break;
+                case 2:
+                    reportDAO.drinkOutOfIngredient();
+                    break;
+                case 3:
+                    reportDAO.showAllDispensingDrink();
                     break;
                 default:
                     throw new AssertionError();

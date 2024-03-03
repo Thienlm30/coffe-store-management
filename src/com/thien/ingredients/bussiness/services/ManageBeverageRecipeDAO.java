@@ -96,6 +96,7 @@ public class ManageBeverageRecipeDAO implements Manageable {
             System.out.println(b.toString());
         }
         System.out.println(" ------------------------------------------------------------------------- ");
+    
     }
 
     private List<BeverageRecipe> converMapToList() {

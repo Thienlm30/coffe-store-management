@@ -32,10 +32,16 @@ public class DispensingDrinkDAO implements Dispensable {
 
         OrderDAL orderDAL = new OrderDAL();
         List<Order> list = new ArrayList<>();
-        orderDAL.loadFromFile(list, orderPathFile);
-        for (Order o : list) {
-            orderMap.put(o.getId(), o);
+        if (orderDAL.loadFromFile(list, orderPathFile)) {
+            this.orderMap = new HashMap<>();
+            for (Order o : list) {
+                orderMap.put(o.getId(), o);
+            }
+            System.out.println("load thanh cong tu order constructor");
+        } else {
+            System.err.println("Error loading order from constructor");
         }
+        
         this.orderDAL = new OrderDAL();
         this.orderPathFile = orderPathFile;
     }

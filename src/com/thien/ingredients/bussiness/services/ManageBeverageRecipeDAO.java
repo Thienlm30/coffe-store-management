@@ -34,7 +34,7 @@ public class ManageBeverageRecipeDAO implements Manageable {
             System.err.println("Error loading beverage from constructor");
         }
         
-        this.ingredientMap = ManageIngredientDAO.ingredientMap;
+        this.ingredientMap = manageIngredientDAO.ingredientMap;
         this.menuPathFile = menuPathFile; 
     }
 

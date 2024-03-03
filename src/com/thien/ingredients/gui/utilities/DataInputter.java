@@ -68,7 +68,7 @@ public class DataInputter {
             try {
                 System.out.print(inputMsg);
                 n = Integer.parseInt(sc.nextLine());
-                if (min >= n) {
+                if (min > n) {
                     throw new Exception();
                 }
                 return n;

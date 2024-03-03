@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.thien.ingredients.bussiness.components.DataValidation;
 import com.thien.ingredients.bussiness.components.IdGenerator;
-import com.thien.ingredients.bussiness.model.Ingredient;
-import com.thien.ingredients.bussiness.model.BeverageRecipe;
 import com.thien.ingredients.bussiness.model.Order;
 import com.thien.ingredients.bussiness.model.OrderStatus;
 import com.thien.ingredients.data.repository.OrderDAL;
 import com.thien.ingredients.gui.utilities.DataInputter;
 
+
 public class DispensingDrinkDAO implements Dispensable {
 
-    private Map<String, Order> orderMap;
-    private Map<String, Ingredient> ingredientMap;
-    private Map<String, BeverageRecipe> beverageRecipeMap;
+    public Map<String, Order> orderMap;
     private OrderDAL orderDAL;
     private String orderPathFile;
     private ManageIngredientDAO manageIngredientDAO;
@@ -27,13 +25,12 @@ public class DispensingDrinkDAO implements Dispensable {
     public DispensingDrinkDAO(ManageIngredientDAO manageIngredientDAO, ManageBeverageRecipeDAO manageBeverageRecipeDAO, String orderPathFile) {
         this.manageIngredientDAO = manageIngredientDAO;
         this.manageBeverageRecipeDAO = manageBeverageRecipeDAO;
-        this.ingredientMap = manageIngredientDAO.ingredientMap;
-        this.beverageRecipeMap = manageBeverageRecipeDAO.beverageRecipeMap;
+        
 
         OrderDAL orderDAL = new OrderDAL();
         List<Order> list = new ArrayList<>();
         if (orderDAL.loadFromFile(list, orderPathFile)) {
-            this.orderMap = new HashMap<>();
+            this.orderMap = new TreeMap<>();
             for (Order o : list) {
                 orderMap.put(o.getId(), o);
             }
@@ -71,40 +68,91 @@ public class DispensingDrinkDAO implements Dispensable {
         Map <String, Integer> drinkMap = new HashMap<>();
         DataValidation dataValidation = new DataValidation();
         do {
-            String drinkId = dataValidation.inputId(prefixId);
+            String beverageId = dataValidation.inputId(prefixId);
             int quantity;
 
-            if (beverageRecipeMap.get(drinkId) == null ) 
+            if (manageBeverageRecipeDAO.beverageRecipeMap.get(beverageId) == null ) 
                 System.out.println("There no drink found");
             else {
-                quantity = DataInputter.getInteger("Enter quantity", "Quantity must a number and cannot be less than one", 1);
-                drinkMap.put(drinkId, quantity);
+                quantity = DataInputter.getInteger("Enter quantity: ", "Quantity must a number and cannot be less than one", 1);
+                // check ingredient quantity
+                if (!isEnoughIngredient(beverageId, quantity))
+                    System.out.println("Ingredient not enough");
+                else 
+                    drinkMap.put(beverageId, quantity);
             }
 
-        } while (!DataInputter.getYN("Are you sure to order?"));
+        } while (DataInputter.getYN("Do you want to countinue order?"));
         return drinkMap;
+    }
+    
+    private boolean isEnoughIngredient(String beverageId, int quantity) {
+        Map<String, Integer> map = manageBeverageRecipeDAO.beverageRecipeMap.get(beverageId).getBeverageRecipeIngredients();
+        for (String s : map.keySet()) {
+            if (manageIngredientDAO.ingredientMap.get(s).getQuantity() < map.get(s) * quantity)
+                return false;
+        }
+        return true;
     }
 
     @Override
-    public void updateDispensingDrink(String menuItemId, int quantity) {
-        
+    public void updateDispensingDrink(String orderId) {
+        if (orderMap.get(orderId).getOrderStatus() == OrderStatus.PREPARING) {
+            if (!DataInputter.getYN("Do you want to cancel this order?")) {
+                manageBeverageRecipeDAO.showAll();
+                System.out.println("==Your old order==");
+                display(orderId);
+                Map<String, Integer> drinkMap = dirnkCollection("D");
+                orderMap.get(orderId).setOrderBeverageRecipe(drinkMap);
+                System.out.println("");
+                display(orderId);
+            } else {
+                orderMap.remove(orderId);
+            }
+        } else {
+            System.out.println("Order have done and cannot edit");
+        }        
+    } 
+    
+    /**
+     * This method show one order
+     * @param id of order
+     */
+    private void display(String id) {
+        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println("|    ID    |                     Details                           |");
+        System.out.println(" ------------------------------------------------------------------ ");
+        System.out.println(orderMap.get(id).toString());
+        System.out.println(" ------------------------------------------------------------------ ");
     }
     
+    /**
+     * This method show all order
+     */
+    public void showAll() {
+        System.out.println(" ------------------------------------------------------------------------- ");
+        System.out.println("|    ID    |                         Details                              |");
+        System.out.println(" ------------------------------------------------------------------------- ");
+        
+        for (Order o : orderMap.values()) {
+            System.out.println(o.toString());
+        }
+        
+        System.out.println(" ------------------------------------------------------------------------- ");
+    }
+    
+    /**
+     * This method sends orders to the database
+     * And set the status of the ingredient and beverage recipe
+     * Ingredients and beverages that have been used will not be deleted
+     */
     public void saveToFile() {
         try {
+            // set status của beverage với ingredient
             orderDAL.saveToFile(converMapToList(), orderPathFile);
         } catch (Exception e) {
             System.out.println("Save order fail");
         }
-    }
-    
-    /**
-     * ?????
-     * @param id
-     * @return 
-     */
-    public boolean checkIngredient(String id) {
-        return ingredientMap.containsKey(id);
     }
     
     private List<Order> converMapToList() {

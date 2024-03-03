@@ -19,10 +19,11 @@ public class ManageBeverageRecipeDAO implements Manageable {
     private MenuDAL menuDAL;
     private Map<String, Ingredient> ingredientMap;
     private String menuPathFile;
+    private ManageIngredientDAO manageIngredientDAO;
     
     public ManageBeverageRecipeDAO(String menuPathFile, ManageIngredientDAO manageIngredientDAO) {
         this.menuDAL = new MenuDAL();
-        
+        this.manageIngredientDAO = manageIngredientDAO;
         List<BeverageRecipe> listBevarage = new ArrayList<>();
         if (menuDAL.loadFromFile(listBevarage, menuPathFile)) {
             this.beverageRecipeMap = new HashMap<>();
@@ -40,6 +41,8 @@ public class ManageBeverageRecipeDAO implements Manageable {
 
     @Override
     public void addNew(String prefixId) {
+        
+        manageIngredientDAO.showAll();
         
         IdGenerator idGenerator = new IdGenerator(beverageRecipeMap, prefixId);
         String id = idGenerator.generateId();

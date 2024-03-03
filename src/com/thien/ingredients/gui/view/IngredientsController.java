@@ -50,7 +50,7 @@ public class IngredientsController {
                     menuDispensableDrink("Dispensing Drink");
                     break;
                 case 4:
-                    menuReport();
+                    menuReport("Report");
                     break;
                 case 5:
                     saveToFile();
@@ -137,7 +137,8 @@ public class IngredientsController {
                 case 2:
                     System.out.println("----You are going to update drink recipe information----");
                     String id = dataValidation.inputId(prefixId);
-                    if (!manageBeverageRecipeDAO.isExit(id)) System.out.println("There no drink found");
+                    if (!manageBeverageRecipeDAO.isExit(id)) 
+                        System.out.println("There no drink found");
                     else {
                         manageBeverageRecipeDAO.display(id); // Show infor before update
                         manageBeverageRecipeDAO.update(id);
@@ -177,7 +178,15 @@ public class IngredientsController {
                     dispensingDrinkDAO.dispensingDrink(prefixID);
                     break;
                 case 2:
-                   // dispensingDrinkDAO.updateDispensingDrink(id, quantity);
+//                    System.out.println("---You are going to update order---");
+//                    String id = dataValidation.inputId(prefixID);
+//                    if (!dispensingDrinkDAO.orderMap.containsKey(id)) 
+//                        System.out.println("There no order found");
+//                    else {
+//                        dispensingDrinkDAO.updateDispensingDrink(id);
+//                    }
+                     dispensingDrinkDAO.showAll();
+                   
                     break;
                 default:
                     System.out.println("---Return to main menu---");
@@ -187,7 +196,28 @@ public class IngredientsController {
 
     }
 
-    private void menuReport() {
+    private void menuReport(String subTitleMenu) {
+        Menu menu = new Menu(subTitleMenu);
+        menu.addOption("Show which ingredient is available");
+        menu.addOption("Show the drink for which the store is out of ingredients");
+        menu.addOption("Show all dispensing drink");
+        menu.addOption("Return to main menu");
+        
+        int choice = 0;
+        
+        do {            
+            menu.printMenu();
+            choice = menu.getChoice();
+            
+            switch (choice) {
+                case 1:
+                    
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+            
+        } while (choice > 0 && choice < 4);
         
     }
     

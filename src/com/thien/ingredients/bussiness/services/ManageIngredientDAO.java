@@ -41,6 +41,8 @@ public class ManageIngredientDAO implements Manageable {
         String unit = DataInputter.getNonBlankString("Enter unit (Example: ml, g, cup,...): ", "Unit cannot be blank");
         
         Ingredient ingredient = new Ingredient(id, name, quantity, unit);
+        // check co add trung khong
+        //  code code ....
         ingredientMap.put(id, ingredient);
     }
 

@@ -37,14 +37,14 @@ public class Order implements Serializable {
     
     @Override
     public String toString() {
-        return String.format("|-%10s|%40S|", id, menuItemIngredientsToString());
+        return String.format("|%-10s|%60S|", id, menuItemIngredientsToString());
     }
 
     private String menuItemIngredientsToString() {
         String result = "";
         if (orderBeverageRecipe != null) 
             for(Map.Entry<String, Integer> o : orderBeverageRecipe.entrySet()){
-                result += o.getKey() + " ";
+                result += o.getKey() + "(" + o.getValue() + ")" + " ";
             }
         
         return result;

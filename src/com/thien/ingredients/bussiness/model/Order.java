@@ -3,7 +3,11 @@ package com.thien.ingredients.bussiness.model;
 import java.io.Serializable;
 import java.util.Map;
 
-
+/**
+ * Represents an order for beverages.
+ * This class contains information about an order, including its ID, beverage recipes, and status.
+ * @author Thienlm30
+ */
 public class Order implements Serializable {
     
     private String id;

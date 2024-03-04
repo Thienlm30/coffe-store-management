@@ -8,6 +8,10 @@ import com.thien.ingredients.bussiness.services.ReportDAO;
 import com.thien.ingredients.gui.utilities.DataInputter;
 import com.thien.ingredients.gui.utilities.Menu;
 
+/**
+ * This class control process
+ * @author Thienlm30
+ */
 public class IngredientsController {
 
     private DataValidation dataValidation;
@@ -15,7 +19,16 @@ public class IngredientsController {
     private ManageBeverageRecipeDAO manageBeverageRecipeDAO;
     private DispensingDrinkDAO dispensingDrinkDAO;
     private ReportDAO reportDAO;
-
+    
+    /**
+    * Constructor for the IngredientsController class.
+    * Initializes DataValidation, ManageIngredientDAO, ManageBeverageRecipeDAO,
+    * DispensingDrinkDAO, and ReportDAO objects based on file paths.
+    *
+    * @param ingredientPathFile The file path for managing ingredient data.
+    * @param menuPathFile       The file path for managing beverage recipe data.
+    * @param orderPathFile      The file path for managing order data.
+    */
     public IngredientsController(String ingredientPathFile, String menuPathFile, String orderPathFile) {
         this.dataValidation = new DataValidation();
         this.manageIngredientDAO = new ManageIngredientDAO(ingredientPathFile);
@@ -24,6 +37,11 @@ public class IngredientsController {
         this.reportDAO = new ReportDAO(manageIngredientDAO, manageBeverageRecipeDAO, dispensingDrinkDAO);
     }
     
+    /**
+    * Displays the main menu and handles user choices.
+    * 
+    * @param menutitle The title of the main menu.
+    */
     public void mainMenu(String menutitle) {
         Menu menu = new Menu(menutitle);
         menu.addOption("Manage ingredients");
@@ -110,7 +128,12 @@ public class IngredientsController {
             }
         } while (choice != 5);
     }
-
+    
+    /**
+    * Displays the submenu for managing ingredients and handles user choices.
+    * 
+    * @param subMenuTitle The title of the submenu.
+    */
     private void menuManageBeverageRecipe(String subMenuTitle) {
         Menu menu = new Menu(subMenuTitle);
         menu.addOption("Add the drink to the menu");
@@ -159,7 +182,12 @@ public class IngredientsController {
             }
         } while (choice > 0 && choice < 5);
     }
-
+    
+    /**
+    * Displays the submenu for dispensing drinks and handles user choices.
+    * 
+    * @param subMenuTitle The title of the submenu.
+    */
     private void menuDispensableDrink(String subMenuTitle) {
         Menu menu = new Menu(subMenuTitle);
         menu.addOption("Dispensing the drink");

@@ -4,12 +4,18 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Represents a beverage recipe.
+ * This class contains information about a beverage recipe, including its ID, name, ingredients, and status.
+ * @author Thienlm30
+ */
 public class BeverageRecipe implements Serializable, Comparable<BeverageRecipe>{
 
     private String id;
     private String name;
     private Map<String, Integer> beverageRecipeIngredients;
     private BeverageRecipeStatus beverageRecipeStatus;
+    
     
     public BeverageRecipe(String id, String name, Map<String, Integer> beverageRecipeIngredients) {
         this.id = id;
@@ -47,7 +53,7 @@ public class BeverageRecipe implements Serializable, Comparable<BeverageRecipe>{
     
     @Override
     public String toString() {
-        return String.format("|%-10s|%30S|%35s|%20s|", id, name, beverageRecipeIngredientsToString(), beverageRecipeStatus);
+        return String.format("|%-10s|%30S|%35s|%15s|", id, name, beverageRecipeIngredientsToString(), beverageRecipeStatus);
     }
 
     private String beverageRecipeIngredientsToString() {

@@ -2,6 +2,11 @@ package com.thien.ingredients.bussiness.model;
 
 import java.io.Serializable;
 
+/**
+ * Represents an ingredient used in beverage recipes.
+ * This class contains information about an ingredient, including its ID, name, quantity, unit, and status.
+ * @author Thielm30
+ */
 public class Ingredient implements Serializable, Comparable<Ingredient> {
     
     private String id;

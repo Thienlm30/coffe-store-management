@@ -2,11 +2,25 @@ package com.thien.ingredients.bussiness.components;
 
 import java.util.Map;
 
+/**
+ * This class provides functionality for generating unique IDs with a specified prefix.
+ * It scans a given map of IDs to determine the current maximum numeric value following the prefix,
+ * and then generates the next available ID by incrementing this maximum value.
+ * 
+ *@author Thienlm30
+ */
 public class IdGenerator {
     
     private int currentMaxId;
     private String prefixId;
-
+    
+    /**
+    * Constructs a new IdGenerator instance with the specified prefix.
+    * The constructor initializes the current maximum ID based on existing IDs in the provided map.
+    *
+    * @param map The map containing existing IDs.
+    * @param prefixId The prefix for the generated IDs.
+    */
     public IdGenerator(Map<String, ?> map, String prefixId) {
         this.prefixId = prefixId;
         this.currentMaxId = 0;
@@ -29,7 +43,12 @@ public class IdGenerator {
             }
         }
     }
-
+    
+    /**
+     * Generates the next available ID by incrementing the current maximum ID.
+     *
+     * @return The generated ID with the specified prefix.
+     */
     public String generateId() {
         return this.prefixId + (++currentMaxId);
     }

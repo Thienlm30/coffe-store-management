@@ -23,7 +23,15 @@ public class DispensingDrinkDAO implements Dispensable {
     private String orderPathFile;
     private ManageIngredientDAO manageIngredientDAO;
     private ManageBeverageRecipeDAO manageBeverageRecipeDAO;
-
+    
+    /**
+     * Constructor for DispensingDrinkDAO.
+     * Initializes the DAO with necessary dependencies and loads orders from a file.
+     *
+     * @param manageIngredientDAO     The data access object for managing ingredients.
+     * @param manageBeverageRecipeDAO The data access object for managing beverage recipes.
+     * @param orderPathFile           The file path for storing order data.
+     */
     public DispensingDrinkDAO(ManageIngredientDAO manageIngredientDAO, ManageBeverageRecipeDAO manageBeverageRecipeDAO, String orderPathFile) {
         this.manageIngredientDAO = manageIngredientDAO;
         this.manageBeverageRecipeDAO = manageBeverageRecipeDAO;
@@ -90,7 +98,7 @@ public class DispensingDrinkDAO implements Dispensable {
 
                 quantity = DataInputter.getInteger("Enter quantity: ", "Quantity must a number and cannot be less than one", 1);
                 // check ingredient quantity
-                if (isEnoughIngredient(beverageId, quantity)) {
+                if (isEnoughIngredient(beverageId, quantity) == false) {
                     System.out.println("Ingredient not enough");
                 } else {
                     orderBeverageRecipe.put(beverageId, quantity);
@@ -101,7 +109,18 @@ public class DispensingDrinkDAO implements Dispensable {
         } while (DataInputter.getYN("Do you want to countinue order?"));
         return orderBeverageRecipe;
     }
-
+    
+    /**
+     * Checks if there are enough ingredients available to prepare a beverage with the specified ID and quantity.
+     * This method retrieves the recipe for the beverage from the manageBeverageRecipeDAO and iterates through
+     * its ingredients. For each ingredient, it checks if the quantity available is sufficient to prepare
+     * the required quantity of the beverage. If any ingredient is not available or its quantity is insufficient,
+     * this method returns false; otherwise, it returns true.
+     *
+     * @param beverageId The ID of the beverage to check for ingredient availability.
+     * @param quantity   The quantity of the beverage to prepare.
+     * @return True if there are enough ingredients available, false otherwise.
+     */
     private boolean isEnoughIngredient(String beverageId, int quantity) {
         
         Map<String, Integer> map = manageBeverageRecipeDAO.beverageRecipeMap.get(beverageId).getBeverageRecipeIngredients();
@@ -111,15 +130,24 @@ public class DispensingDrinkDAO implements Dispensable {
             int requiredQuantity = entry.getValue() * quantity;
             System.out.println(manageIngredientDAO.ingredientMap.get(ingredientId).toString());
             System.out.println(requiredQuantity);
-            if (manageIngredientDAO.ingredientMap.get(ingredientId).getIngredientStatus() == IngredientStatus.NOT_AVAILABLE || manageIngredientDAO.ingredientMap.get(ingredientId).getIngredientStatus() == IngredientStatus.OUT_OF_STOCK)
+            if ((manageIngredientDAO.ingredientMap.get(ingredientId).getIngredientStatus() == IngredientStatus.NOT_AVAILABLE) || (manageIngredientDAO.ingredientMap.get(ingredientId).getIngredientStatus() == IngredientStatus.OUT_OF_STOCK))
                 return false;
-            if (manageIngredientDAO.ingredientMap.get(ingredientId).getQuantity() < requiredQuantity || manageIngredientDAO.ingredientMap.get(ingredientId).getIngredientStatus() != IngredientStatus.AVAILABLE) {
+            else if(manageIngredientDAO.ingredientMap.get(ingredientId).getQuantity() < requiredQuantity  ) {
                 return false;
             }
         }
         return true;
     }
-
+    
+    /**
+     * Updates the dispensing of a drink order identified by its order ID.
+     * This method allows the user to update the details of a drink order, such as adding or removing
+     * beverages from the order. If the order is currently being prepared, the user can choose to cancel it
+     * or modify the order by adding or removing beverages. If the order is already done, it cannot be
+     * modified, and a message indicating this is displayed.
+     *
+     * @param orderId The ID of the order to update.
+     */
     @Override
     public void updateDispensingDrink(String orderId) {
         if (orderMap.get(orderId).getOrderStatus() == OrderStatus.PREPARING) {
@@ -133,6 +161,7 @@ public class DispensingDrinkDAO implements Dispensable {
                 display(orderId);
             } else {
                 orderMap.remove(orderId);
+                System.out.println("Cancel order thanh cong");
             }
         } else {
             System.out.println("Order have done and cannot edit");
@@ -141,7 +170,6 @@ public class DispensingDrinkDAO implements Dispensable {
 
     /**
      * This method show one order
-     *
      * @param id of order
      */
     private void display(String id) {
@@ -183,7 +211,12 @@ public class DispensingDrinkDAO implements Dispensable {
             System.out.println("Save order fail");
         }
     }
-
+    
+    /**
+    * Updates the status of ingredients based on the orders being prepared.
+    * This method iterates through all preparing orders, deducts the required quantities
+    * of ingredients from the available stock, and updates the ingredient status accordingly.
+    */
     private void setIngredientStatus() {
 
         System.out.println("ham update status ingre");
@@ -224,7 +257,11 @@ public class DispensingDrinkDAO implements Dispensable {
         }
     }    
     
-
+    /**
+    * Updates the status of beverages based on the orders being prepared.
+    * This method iterates through all preparing orders and sets the status of 
+    * each beverage in the order's recipe to AVAILABLE.
+    */
     private void setBeverageStatus() {
         for (Order o : orderMap.values()) {
             if (o.getOrderStatus() == OrderStatus.PREPARING) {
@@ -234,13 +271,24 @@ public class DispensingDrinkDAO implements Dispensable {
             }
         }
     }
-
+    /**
+    * Sets the status of all orders in the order map to DONE.
+    * This method iterates through all orders in the order map and 
+    * sets their status to DONE, indicating that they have been processed.
+    */
     private void setOrderStatus() {
         for (Order o : orderMap.values()) {
             o.setOrderStatus(OrderStatus.DONE);
         }
     }
-
+    
+    /**
+     * Converts the order map to a list of orders.
+     * This method iterates through the order map and converts its values (orders)
+     * into a list of orders. This list is then returned.
+     *
+     * @return A list containing all orders from the order map.
+     */
     private List<Order> converMapToList() {
         List<Order> list = new ArrayList<>();
         for (Order o : orderMap.values()) {

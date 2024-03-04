@@ -7,6 +7,7 @@ import java.util.TreeMap;
 /**
  * Represents a beverage recipe.
  * This class contains information about a beverage recipe, including its ID, name, ingredients, and status.
+ *
  * @author Thienlm30
  */
 public class BeverageRecipe implements Serializable, Comparable<BeverageRecipe>{

@@ -221,7 +221,12 @@ public class IngredientsController {
         } while (choice > 0 && choice < 3);
 
     }
-
+    
+    /**
+    * Displays the submenu for generating reports and handles user choices.
+    * 
+    * @param subTitleMenu The title of the submenu.
+    */
     private void menuReport(String subTitleMenu) {
         Menu menu = new Menu(subTitleMenu);
         menu.addOption("Show which ingredient is available");
@@ -253,7 +258,9 @@ public class IngredientsController {
         } while (choice > 0 && choice < 4);
         
     }
-    
+    /**
+    * Saves data to files by calling the respective DAO methods.
+    */
     private void saveToFile() {
         
         dispensingDrinkDAO.saveToFile();

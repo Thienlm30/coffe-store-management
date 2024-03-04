@@ -60,14 +60,15 @@ public class DispensingDrinkDAO implements Dispensable {
      */
     @Override
     public void dispensingDrink(String prefixId) {
-
-        Map<String, Integer> orderBeverageRecipe = drinkCollection("D");
+        IdGenerator idGenerator = new IdGenerator(orderMap, prefixId);
+        String id = idGenerator.generateId();
+        Map<String, Integer> orderBeverageRecipe = drinkCollection("D", id);
 
         if (orderBeverageRecipe.isEmpty()) {
             System.out.println("emty order");
         } else {
-            IdGenerator idGenerator = new IdGenerator(orderMap, prefixId);
-            String id = idGenerator.generateId();
+            
+            
             orderMap.put(id, new Order(id, orderBeverageRecipe));
             orderMap.get(id).setOrderStatus(OrderStatus.PREPARING);
             System.out.println("Them order thanh cong");
@@ -80,13 +81,13 @@ public class DispensingDrinkDAO implements Dispensable {
      * @param prefixId is the prefix of the drink's id
      * @return a list contain drinks order
      */
-    private Map<String, Integer> drinkCollection(String prefixId) {
+    private Map<String, Integer> drinkCollection(String prefixId, String orderId) {
         Map<String, Integer> orderBeverageRecipe = new HashMap<>();
         DataValidation dataValidation = new DataValidation();
         do {
             String beverageId = dataValidation.inputId(prefixId);
             int quantity;
-
+            
             // check drink id
             if (manageBeverageRecipeDAO.beverageRecipeMap.get(beverageId) == null) {
                 System.out.println("There no drink found");
@@ -95,9 +96,17 @@ public class DispensingDrinkDAO implements Dispensable {
                 System.out.println("Drink are not availabe");
             } // check ingredient in recipe
             else {
-
+                int oldQuantity = 0;
+                try {
+                    oldQuantity = orderMap.get(orderId).getOrderBeverageRecipe().get(beverageId);
+                } catch (Exception e) {
+                    System.out.println("");
+                }
                 quantity = DataInputter.getInteger("Enter quantity: ", "Quantity must a number and cannot be less than one", 1);
                 // check ingredient quantity
+                
+                if ( oldQuantity != 0 ) quantity += oldQuantity;
+                
                 if (isEnoughIngredient(beverageId, quantity) == false) {
                     System.out.println("Ingredient not enough");
                 } else {
@@ -155,7 +164,7 @@ public class DispensingDrinkDAO implements Dispensable {
                 manageBeverageRecipeDAO.showAll();
                 System.out.println("==Your old order==");
                 display(orderId);
-                Map<String, Integer> drinkMap = drinkCollection("D");
+                Map<String, Integer> drinkMap = drinkCollection("D", orderId);
                 orderMap.get(orderId).setOrderBeverageRecipe(drinkMap);
                 System.out.println("");
                 display(orderId);

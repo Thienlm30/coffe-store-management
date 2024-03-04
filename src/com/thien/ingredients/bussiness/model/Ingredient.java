@@ -65,13 +65,15 @@ public class Ingredient implements Serializable, Comparable<Ingredient> {
 
     @Override
     public int compareTo(Ingredient o) {
-        if (this.getId().compareTo(o.getId()) > 0){
+        /*if (this.getId().compareTo(o.getId()) > 0){
             return 1;
         } else if (this.getId().compareTo(o.getId()) < 0) {
             return -1;
         } else {
             return 0;
-        }
+        }*/
+        return this.getId().compareTo(o.getId());
+        
     }
     
     

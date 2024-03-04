@@ -20,7 +20,9 @@ import com.thien.ingredients.gui.utilities.DataInputter;
  * @author Thienlm30
  */
 public class ManageBeverageRecipeDAO implements Manageable {
-
+    private final String TIEU_DE = " ----------------------------------------------------------------------------------------------+\n" +
+                                    "|    ID    |             Name             |             Recipe            |       Status       |\n" +
+                                    " ----------------------------------------------------------------------------------------------+ \n";
     public Map<String, BeverageRecipe> beverageRecipeMap;
     private MenuDAL menuDAL;
     private Map<String, Ingredient> ingredientMap;
@@ -178,9 +180,7 @@ public class ManageBeverageRecipeDAO implements Manageable {
     */
     public void display(String id) {
         
-        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
-        System.out.println("|    ID    |             Name             |             Recipe            |       Status       |");
-        System.out.println(" ----------------------------------------------------------------------------------------------+ ");
+        System.out.println(TIEU_DE);
         System.out.println(beverageRecipeMap.get(id).toString());
         System.out.println(" ----------------------------------------------------------------------------------------------+ ");
     }
